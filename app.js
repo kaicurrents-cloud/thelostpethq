@@ -348,6 +348,45 @@ function generateFlyer() {
             y += 30;
         }
         
+        // Generate and draw QR code (phone number)
+        if (typeof QRCode !== 'undefined' && ownerPhone) {
+            const qrSize = 90;
+            const qrX = canvas.width - qrSize - 40;
+            const qrY = contactBoxY - qrSize - 20;
+            
+            // Create tel: link for QR
+            const phoneClean = ownerPhone.replace(/\D/g, '');
+            const telLink = 'tel:' + phoneClean;
+            
+            // Generate QR code to canvas
+            const qrCanvas = document.createElement('canvas');
+            QRCode.toCanvas(qrCanvas, telLink, { 
+                width: qrSize,
+                margin: 1,
+                color: { dark: '#1e1b4b', light: '#ffffff' }
+            }, function(error) {
+                if (!error) {
+                    // Draw white background for QR
+                    ctx.fillStyle = '#ffffff';
+                    ctx.strokeStyle = '#e5e7eb';
+                    ctx.lineWidth = 2;
+                    roundRect(ctx, qrX - 10, qrY - 10, qrSize + 20, qrSize + 35, 8);
+                    ctx.fill();
+                    ctx.stroke();
+                    
+                    // Draw QR code
+                    ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize);
+                    
+                    // Label
+                    ctx.fillStyle = '#6b7280';
+                    ctx.font = '10px "Plus Jakarta Sans", Arial, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('SCAN TO CALL', qrX + qrSize/2, qrY + qrSize + 15);
+                    ctx.textAlign = 'center'; // Reset
+                }
+            });
+        }
+        
         // Footer
         y = canvas.height - 30;
         ctx.fillStyle = '#9ca3af';
