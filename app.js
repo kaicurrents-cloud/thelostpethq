@@ -728,12 +728,79 @@ function resetChecklist() {
     }
 }
 
-// Initialize checklist when results are shown
+// Initialize checklist and time counter when results are shown
 const originalGenerateResults = generateResults;
 generateResults = function() {
     originalGenerateResults.apply(this, arguments);
     setTimeout(initChecklist, 100);
+    setTimeout(initTimeElapsed, 100);
 };
+
+// === TIME ELAPSED COUNTER ===
+let timeElapsedInterval;
+
+function initTimeElapsed() {
+    const dateInput = document.getElementById('lastDate').value;
+    const timeInput = document.getElementById('lastTime').value || '12:00';
+    const petName = document.getElementById('petName').value.trim();
+    
+    if (!dateInput) return;
+    
+    // Set pet name in display
+    document.getElementById('petNameDisplay').textContent = petName;
+    
+    // Calculate and update
+    updateTimeElapsed(dateInput, timeInput);
+    
+    // Update every minute
+    if (timeElapsedInterval) clearInterval(timeElapsedInterval);
+    timeElapsedInterval = setInterval(() => updateTimeElapsed(dateInput, timeInput), 60000);
+}
+
+function updateTimeElapsed(dateStr, timeStr) {
+    const lostDate = new Date(dateStr + 'T' + timeStr);
+    const now = new Date();
+    const diffMs = now - lostDate;
+    
+    if (diffMs < 0) {
+        document.getElementById('timeElapsed').textContent = 'Just now';
+        return;
+    }
+    
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    
+    let timeStr2, message, alertClass;
+    
+    if (diffMins < 60) {
+        timeStr2 = diffMins + ' minute' + (diffMins !== 1 ? 's' : '');
+        message = '🟢 Great timing! Most pets are found within the first few hours.';
+        alertClass = 'alert-good';
+    } else if (diffHours < 4) {
+        timeStr2 = diffHours + ' hour' + (diffHours !== 1 ? 's' : '');
+        message = '🟡 Critical window! Act fast — share everywhere now.';
+        alertClass = 'alert-urgent';
+    } else if (diffHours < 24) {
+        timeStr2 = diffHours + ' hour' + (diffHours !== 1 ? 's' : '');
+        message = '🟠 Still in the critical period. Keep searching and sharing!';
+        alertClass = 'alert-warning';
+    } else if (diffDays < 7) {
+        timeStr2 = diffDays + ' day' + (diffDays !== 1 ? 's' : '') + ', ' + (diffHours % 24) + ' hours';
+        message = '📍 Don\'t give up! Many pets are found after several days.';
+        alertClass = 'alert-info';
+    } else {
+        timeStr2 = diffDays + ' days';
+        message = '💪 Keep going! Pets have been reunited after weeks or months.';
+        alertClass = 'alert-info';
+    }
+    
+    document.getElementById('timeElapsed').textContent = timeStr2;
+    document.getElementById('timeMessage').textContent = message;
+    
+    const alertEl = document.getElementById('timeAlert');
+    alertEl.className = 'time-alert ' + alertClass;
+}
 
 // === EMAIL CAPTURE ===
 function handleEmailSubmit(e) {

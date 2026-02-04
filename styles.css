@@ -1937,3 +1937,75 @@ section {
     background: var(--gray-100);
     color: var(--gray-600);
 }
+
+/* === TIME ELAPSED ALERT === */
+.time-alert {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px solid #7dd3fc;
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+
+.time-alert.alert-good {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-color: #86efac;
+}
+
+.time-alert.alert-urgent {
+    background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
+    border-color: #fde047;
+}
+
+.time-alert.alert-warning {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+    border-color: #fdba74;
+}
+
+.time-alert.alert-info {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-color: #7dd3fc;
+}
+
+.time-alert-icon {
+    font-size: 2.5rem;
+}
+
+.time-alert-content {
+    flex: 1;
+}
+
+.time-alert-label {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    margin-bottom: 4px;
+}
+
+.time-alert-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.time-alert-message {
+    font-size: 0.9rem;
+    color: var(--gray-700);
+    max-width: 250px;
+    text-align: right;
+}
+
+@media (max-width: 640px) {
+    .time-alert {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    
+    .time-alert-message {
+        max-width: 100%;
+        text-align: center;
+    }
+}
