@@ -539,7 +539,13 @@
                 <div class="result-card checklist-card">
                     <div class="card-header">
                         <h3>✅ Action Checklist</h3>
-                        <span class="card-badge urgent">Time-sensitive!</span>
+                        <button class="btn-reset" onclick="resetChecklist()" title="Reset checklist">↺</button>
+                    </div>
+                    <div class="checklist-progress">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="checklistProgress"></div>
+                        </div>
+                        <span class="progress-text" id="checklistProgressText">0/0 completed</span>
                     </div>
                     
                     <!-- First Hour -->

@@ -666,6 +666,75 @@ function fallbackShare(text) {
     });
 }
 
+// === CHECKLIST PERSISTENCE ===
+function initChecklist() {
+    const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+    const progressBar = document.getElementById('checklistProgress');
+    const progressText = document.getElementById('checklistProgressText');
+    
+    // Load saved state
+    const saved = JSON.parse(localStorage.getItem('lostpethq_checklist') || '{}');
+    
+    checkboxes.forEach((cb, index) => {
+        // Restore state
+        if (saved[index]) {
+            cb.checked = true;
+        }
+        
+        // Save on change
+        cb.addEventListener('change', () => {
+            const state = {};
+            checkboxes.forEach((c, i) => {
+                if (c.checked) state[i] = true;
+            });
+            localStorage.setItem('lostpethq_checklist', JSON.stringify(state));
+            updateChecklistProgress();
+        });
+    });
+    
+    updateChecklistProgress();
+}
+
+function updateChecklistProgress() {
+    const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+    const progressBar = document.getElementById('checklistProgress');
+    const progressText = document.getElementById('checklistProgressText');
+    
+    if (!progressBar || !progressText) return;
+    
+    const total = checkboxes.length;
+    const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+    const percent = Math.round((checked / total) * 100);
+    
+    progressBar.style.width = percent + '%';
+    progressText.textContent = `${checked}/${total} completed (${percent}%)`;
+    
+    // Celebrate completion
+    if (percent === 100 && checked > 0) {
+        progressBar.classList.add('complete');
+        progressText.textContent = '🎉 All done! Keep checking shelters daily.';
+    } else {
+        progressBar.classList.remove('complete');
+    }
+}
+
+function resetChecklist() {
+    if (confirm('Reset all checklist items? This cannot be undone.')) {
+        localStorage.removeItem('lostpethq_checklist');
+        document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+        });
+        updateChecklistProgress();
+    }
+}
+
+// Initialize checklist when results are shown
+const originalGenerateResults = generateResults;
+generateResults = function() {
+    originalGenerateResults.apply(this, arguments);
+    setTimeout(initChecklist, 100);
+};
+
 // === EMAIL CAPTURE ===
 function handleEmailSubmit(e) {
     e.preventDefault();

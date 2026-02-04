@@ -1884,3 +1884,56 @@ section {
 .checklist-group .checklist-item:last-child {
     margin-bottom: 0;
 }
+
+/* === CHECKLIST PROGRESS === */
+.checklist-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.progress-bar-container {
+    flex: 1;
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), #764ba2);
+    border-radius: 4px;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+.progress-bar.complete {
+    background: linear-gradient(90deg, #059669, #10b981);
+}
+
+.progress-text {
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.btn-reset {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--gray-400);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.btn-reset:hover {
+    background: var(--gray-100);
+    color: var(--gray-600);
+}
