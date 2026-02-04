@@ -146,19 +146,40 @@ function removePhoto() {
 function generateResults() {
     if (!validateCurrentStep()) return;
     
-    document.getElementById('formSection').style.display = 'none';
-    document.getElementById('resultsSection').style.display = 'block';
+    // Show loading state
+    const formSection = document.getElementById('formSection');
+    const resultsSection = document.getElementById('resultsSection');
     
-    // Set zip in map header
-    document.getElementById('mapZipCode').textContent = document.getElementById('zipCode').value;
+    // Create loading overlay
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.id = 'loadingOverlay';
+    loadingOverlay.innerHTML = `
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Creating your flyer...</p>
+        </div>
+    `;
+    document.body.appendChild(loadingOverlay);
     
-    // Generate the flyer
-    generateFlyer();
-    
-    // Load flyer locations (simulated)
-    loadFlyerLocations();
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Simulate brief loading for better UX
+    setTimeout(() => {
+        formSection.style.display = 'none';
+        resultsSection.style.display = 'block';
+        
+        // Set zip in map header
+        document.getElementById('mapZipCode').textContent = document.getElementById('zipCode').value;
+        
+        // Generate the flyer
+        generateFlyer();
+        
+        // Load flyer locations (simulated)
+        loadFlyerLocations();
+        
+        // Remove loading overlay
+        loadingOverlay.remove();
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 800);
 }
 
 // === FLYER GENERATION ===
@@ -571,6 +592,33 @@ function shareToTwitter() {
 Please RT! 🙏 #LostPet #LostDog #LostCat`);
     
     window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'width=600,height=400');
+}
+
+function copyShareLink() {
+    const petName = document.getElementById('petName').value.trim();
+    const petType = document.getElementById('petType').value;
+    const lastLocation = document.getElementById('lastLocation').value.trim();
+    const ownerPhone = document.getElementById('ownerPhone').value.trim();
+    
+    const shareText = `🚨 LOST ${petType.toUpperCase()}: ${petName}
+📍 Last seen: ${lastLocation}
+📞 Contact: ${ownerPhone}
+
+Create a lost pet flyer free at: https://thelostpethq.com`;
+    
+    navigator.clipboard.writeText(shareText).then(() => {
+        // Show feedback
+        const btn = event.target.closest('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('copied');
+        }, 2000);
+    }).catch(() => {
+        prompt('Copy this text:', shareText);
+    });
 }
 
 function shareFlyer() {
