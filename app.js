@@ -443,6 +443,97 @@ function downloadFlyer() {
     link.click();
 }
 
+function downloadFlyerPDF() {
+    const canvas = document.getElementById('flyerCanvas');
+    const petName = document.getElementById('petName').value.trim() || 'pet';
+    const { jsPDF } = window.jspdf;
+    
+    // Create PDF in letter size (8.5 x 11 inches)
+    const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'in',
+        format: 'letter'
+    });
+    
+    // Get canvas as image
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    
+    // Calculate dimensions to fit nicely on letter paper with margins
+    const pageWidth = 8.5;
+    const pageHeight = 11;
+    const margin = 0.5;
+    const maxWidth = pageWidth - (margin * 2);
+    const maxHeight = pageHeight - (margin * 2);
+    
+    // Canvas aspect ratio
+    const canvasRatio = canvas.width / canvas.height;
+    let imgWidth = maxWidth;
+    let imgHeight = imgWidth / canvasRatio;
+    
+    // If too tall, scale down
+    if (imgHeight > maxHeight) {
+        imgHeight = maxHeight;
+        imgWidth = imgHeight * canvasRatio;
+    }
+    
+    // Center on page
+    const x = (pageWidth - imgWidth) / 2;
+    const y = (pageHeight - imgHeight) / 2;
+    
+    pdf.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+    pdf.save('LOST-' + petName.toUpperCase().replace(/\s+/g, '-') + '-flyer.pdf');
+}
+
+function shareToFacebook() {
+    const petName = document.getElementById('petName').value.trim();
+    const petType = document.getElementById('petType').value;
+    const lastLocation = document.getElementById('lastLocation').value.trim();
+    
+    const text = encodeURIComponent(`🚨 LOST ${petType.toUpperCase()}: ${petName} - Last seen near ${lastLocation}. Please help share!`);
+    const url = encodeURIComponent('https://thelostpethq.com');
+    
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank', 'width=600,height=400');
+    
+    // Prompt to download flyer first
+    alert('Tip: Download your flyer first, then attach it to your Facebook post for maximum visibility!');
+}
+
+function shareToNextdoor() {
+    const petName = document.getElementById('petName').value.trim();
+    const petType = document.getElementById('petType').value;
+    const lastLocation = document.getElementById('lastLocation').value.trim();
+    const ownerPhone = document.getElementById('ownerPhone').value.trim();
+    
+    const text = `🚨 LOST ${petType.toUpperCase()}: ${petName}
+📍 Last seen: ${lastLocation}
+📞 Contact: ${ownerPhone}
+
+Please share with neighbors! #LostPet`;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        window.open('https://nextdoor.com/news_feed/', '_blank');
+        alert('Text copied! Paste it in your Nextdoor post and attach your downloaded flyer.');
+    }).catch(() => {
+        prompt('Copy this text for Nextdoor:', text);
+        window.open('https://nextdoor.com/news_feed/', '_blank');
+    });
+}
+
+function shareToTwitter() {
+    const petName = document.getElementById('petName').value.trim();
+    const petType = document.getElementById('petType').value;
+    const lastLocation = document.getElementById('lastLocation').value.trim();
+    const ownerPhone = document.getElementById('ownerPhone').value.trim();
+    
+    const text = encodeURIComponent(`🚨 LOST ${petType.toUpperCase()}: ${petName}
+📍 Last seen: ${lastLocation}
+📞 ${ownerPhone}
+
+Please RT! 🙏 #LostPet #LostDog #LostCat`);
+    
+    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'width=600,height=400');
+}
+
 function shareFlyer() {
     const canvas = document.getElementById('flyerCanvas');
     const petName = document.getElementById('petName').value.trim();

@@ -1540,3 +1540,90 @@ section {
         justify-content: center;
     }
 }
+
+/* === SOCIAL SHARE BUTTONS === */
+.flyer-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.action-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.share-section {
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-200);
+}
+
+.share-label {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-social {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-facebook {
+    background: #1877f2;
+    color: white;
+}
+
+.btn-facebook:hover {
+    background: #166fe5;
+    transform: translateY(-2px);
+}
+
+.btn-nextdoor {
+    background: #8ed500;
+    color: #1a1a1a;
+}
+
+.btn-nextdoor:hover {
+    background: #7ec200;
+    transform: translateY(-2px);
+}
+
+.btn-twitter {
+    background: #000;
+    color: white;
+}
+
+.btn-twitter:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+    .action-row,
+    .social-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-social,
+    .action-row .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

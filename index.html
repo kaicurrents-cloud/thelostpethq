@@ -10,11 +10,36 @@
     <meta property="og:description" content="Generate a professional lost pet flyer and get local resources instantly. Free.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://thelostpethq.com">
+    <meta property="og:image" content="https://thelostpethq.com/og-image.png">
+    <meta property="og:site_name" content="The Lost Pet HQ">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Lost Pet HQ - Find Your Lost Pet Fast">
+    <meta name="twitter:description" content="Generate a professional lost pet flyer and get local resources instantly. Free.">
+    <meta name="twitter:image" content="https://thelostpethq.com/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
     <link rel="canonical" href="https://thelostpethq.com">
+    
+    <!-- Analytics (replace GA_MEASUREMENT_ID with your Google Analytics ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -407,24 +432,56 @@
                         <canvas id="flyerCanvas" width="800" height="1000"></canvas>
                     </div>
                     <div class="flyer-actions">
-                        <button class="btn btn-primary" onclick="downloadFlyer()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
-                            Download Flyer
-                        </button>
-                        <button class="btn btn-secondary" onclick="shareFlyer()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                                <circle cx="18" cy="5" r="3"></circle>
-                                <circle cx="6" cy="12" r="3"></circle>
-                                <circle cx="18" cy="19" r="3"></circle>
-                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                            </svg>
-                            Share
-                        </button>
+                        <div class="action-row">
+                            <button class="btn btn-primary" onclick="downloadFlyer()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download JPG
+                            </button>
+                            <button class="btn btn-secondary" onclick="downloadFlyerPDF()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                </svg>
+                                Download PDF
+                            </button>
+                        </div>
+                        <div class="share-section">
+                            <p class="share-label">Share on social media:</p>
+                            <div class="social-buttons">
+                                <button class="btn btn-social btn-facebook" onclick="shareToFacebook()">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                                    </svg>
+                                    Facebook
+                                </button>
+                                <button class="btn btn-social btn-nextdoor" onclick="shareToNextdoor()">
+                                    <span style="font-weight:700;font-size:16px;">N</span>
+                                    Nextdoor
+                                </button>
+                                <button class="btn btn-social btn-twitter" onclick="shareToTwitter()">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                    </svg>
+                                    X / Twitter
+                                </button>
+                                <button class="btn btn-secondary" onclick="shareFlyer()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                        <circle cx="18" cy="5" r="3"></circle>
+                                        <circle cx="6" cy="12" r="3"></circle>
+                                        <circle cx="18" cy="19" r="3"></circle>
+                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                    </svg>
+                                    More...
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
