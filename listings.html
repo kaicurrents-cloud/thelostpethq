@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found Pets Near You - The Lost Pet HQ</title>
+    <meta name="description" content="Browse lost and found pets in your area. Help reunite pets with their families or find your missing companion.">
+    <meta property="og:title" content="Lost & Found Pets - The Lost Pet HQ">
+    <meta property="og:description" content="Browse lost and found pets near you. Help reunite families.">
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Listings Page Specific Styles */
+        .listings-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 0 40px;
+            color: white;
+            text-align: center;
+        }
+        
+        .listings-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+        
+        .listings-hero p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .search-filters {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            margin: -30px auto 40px;
+            max-width: 900px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .filter-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .search-btn {
+            align-self: flex-end;
+        }
+        
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            padding: 0 0 60px;
+        }
+        
+        .listing-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .listing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+        
+        .listing-image {
+            height: 200px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            position: relative;
+        }
+        
+        .listing-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .listing-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .listing-badge.lost {
+            background: #dc2626;
+            color: white;
+        }
+        
+        .listing-badge.found {
+            background: #059669;
+            color: white;
+        }
+        
+        .listing-content {
+            padding: 20px;
+        }
+        
+        .listing-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .listing-details {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        
+        .listing-location {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        .listing-date {
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        
+        .listing-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .listing-actions .btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .no-listings {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 20px;
+            color: #6b7280;
+        }
+        
+        .no-listings span {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 16px;
+        }
+        
+        .add-listing-cta {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .add-listing-cta h2 {
+            margin-bottom: 12px;
+        }
+        
+        .add-listing-cta p {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            padding: 24px;
+            background: #f9fafb;
+            margin-bottom: 40px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-paw">🐾</span>
+                <span class="logo-text">The Lost Pet <strong>HQ</strong></span>
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/listings.html" class="active">Browse Pets</a>
+                <button class="btn btn-nav" onclick="window.location.href='/'">Report Pet</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="listings-hero">
+        <div class="container">
+            <h1>Lost & Found Pets</h1>
+            <p>Browse listings in your area or add your pet to the database</p>
+        </div>
+    </section>
+
+    <!-- Search Filters -->
+    <div class="container">
+        <div class="search-filters">
+            <div class="filter-group">
+                <label>Status</label>
+                <select id="filterStatus" onchange="filterListings()">
+                    <option value="all">All Pets</option>
+                    <option value="lost">Lost Pets</option>
+                    <option value="found">Found Pets</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Pet Type</label>
+                <select id="filterType" onchange="filterListings()">
+                    <option value="all">All Types</option>
+                    <option value="dog">Dogs</option>
+                    <option value="cat">Cats</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Zip Code</label>
+                <input type="text" id="filterZip" placeholder="Enter zip code" onchange="filterListings()">
+            </div>
+            <button class="btn btn-primary search-btn" onclick="filterListings()">Search</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number" id="totalListings">0</div>
+                <div class="stat-label">Active Listings</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="lostCount">0</div>
+                <div class="stat-label">Lost Pets</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="foundCount">0</div>
+                <div class="stat-label">Found Pets</div>
+            </div>
+        </div>
+
+        <!-- Add Listing CTA -->
+        <div class="add-listing-cta">
+            <h2>🐾 Add Your Pet to the Database</h2>
+            <p>Create a free listing to help spread the word. Your pet will be visible to thousands of people in your area.</p>
+            <a href="/" class="btn btn-primary btn-large">Create Free Listing</a>
+        </div>
+
+        <!-- Listings Grid -->
+        <div class="listings-grid" id="listingsGrid">
+            <!-- Populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content" style="text-align: center; padding: 40px 0;">
+                <p>© 2026 The Lost Pet HQ. Helping reunite pets with their families.</p>
+                <p style="margin-top: 8px;"><a href="/">Create a Lost Pet Flyer</a> • <a href="/listings.html">Browse Listings</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample listings data (would come from backend in production)
+        const sampleListings = [
+            {
+                id: 1,
+                status: 'lost',
+                name: 'Max',
+                type: 'dog',
+                breed: 'Golden Retriever',
+                color: 'Golden',
+                location: 'Oak Park, Chicago',
+                zip: '60302',
+                date: '2026-02-02',
+                photo: null,
+                phone: '(555) 123-4567'
+            },
+            {
+                id: 2,
+                status: 'found',
+                name: 'Unknown',
+                type: 'cat',
+                breed: 'Tabby',
+                color: 'Orange',
+                location: 'Lincoln Square, Chicago',
+                zip: '60625',
+                date: '2026-02-03',
+                photo: null,
+                phone: '(555) 987-6543'
+            },
+            {
+                id: 3,
+                status: 'lost',
+                name: 'Bella',
+                type: 'dog',
+                breed: 'Chihuahua Mix',
+                color: 'Brown',
+                location: 'Wicker Park, Chicago',
+                zip: '60622',
+                date: '2026-02-01',
+                photo: null,
+                phone: '(555) 456-7890'
+            },
+            {
+                id: 4,
+                status: 'lost',
+                name: 'Whiskers',
+                type: 'cat',
+                breed: 'Siamese',
+                color: 'Cream',
+                location: 'Boise, ID',
+                zip: '83702',
+                date: '2026-02-04',
+                photo: null,
+                phone: '(208) 555-1234'
+            },
+            {
+                id: 5,
+                status: 'found',
+                name: 'Unknown',
+                type: 'dog',
+                breed: 'Beagle',
+                color: 'Tricolor',
+                location: 'Meridian, ID',
+                zip: '83642',
+                date: '2026-02-03',
+                photo: null,
+                phone: '(208) 555-5678'
+            }
+        ];
+
+        // Combine with any localStorage listings
+        function getAllListings() {
+            const stored = JSON.parse(localStorage.getItem('lostpethq_listings') || '[]');
+            return [...sampleListings, ...stored];
+        }
+
+        function renderListings(listings) {
+            const grid = document.getElementById('listingsGrid');
+            
+            if (listings.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-listings">
+                        <span>🔍</span>
+                        <h3>No pets found matching your filters</h3>
+                        <p>Try adjusting your search or add a new listing</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = listings.map(pet => {
+                const emoji = pet.type === 'dog' ? '🐕' : pet.type === 'cat' ? '🐈' : '🐾';
+                const dateFormatted = new Date(pet.date).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                return `
+                    <div class="listing-card">
+                        <div class="listing-image">
+                            ${pet.photo ? `<img src="${pet.photo}" alt="${pet.name}">` : emoji}
+                            <span class="listing-badge ${pet.status}">${pet.status}</span>
+                        </div>
+                        <div class="listing-content">
+                            <div class="listing-name">${pet.name}</div>
+                            <div class="listing-details">${pet.breed} • ${pet.color}</div>
+                            <div class="listing-location">📍 ${pet.location}</div>
+                            <div class="listing-date">${pet.status === 'lost' ? 'Lost' : 'Found'} ${dateFormatted}</div>
+                            <div class="listing-actions">
+                                <a href="tel:${pet.phone}" class="btn btn-primary">📞 Contact</a>
+                                <button class="btn btn-secondary" onclick="shareListing(${pet.id})">Share</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterListings() {
+            const status = document.getElementById('filterStatus').value;
+            const type = document.getElementById('filterType').value;
+            const zip = document.getElementById('filterZip').value.trim();
+            
+            let listings = getAllListings();
+            
+            if (status !== 'all') {
+                listings = listings.filter(p => p.status === status);
+            }
+            if (type !== 'all') {
+                listings = listings.filter(p => p.type === type);
+            }
+            if (zip) {
+                listings = listings.filter(p => p.zip && p.zip.startsWith(zip));
+            }
+            
+            renderListings(listings);
+            updateStats();
+        }
+
+        function updateStats() {
+            const all = getAllListings();
+            document.getElementById('totalListings').textContent = all.length;
+            document.getElementById('lostCount').textContent = all.filter(p => p.status === 'lost').length;
+            document.getElementById('foundCount').textContent = all.filter(p => p.status === 'found').length;
+        }
+
+        function shareListing(id) {
+            const pet = getAllListings().find(p => p.id === id);
+            if (!pet) return;
+            
+            const text = `🚨 ${pet.status.toUpperCase()} ${pet.type.toUpperCase()}: ${pet.name}\n📍 ${pet.location}\n📞 ${pet.phone}\n\nSee more at TheLostPetHQ.com`;
+            
+            if (navigator.share) {
+                navigator.share({ title: `${pet.status} ${pet.type}: ${pet.name}`, text });
+            } else {
+                navigator.clipboard.writeText(text);
+                alert('Listing info copied to clipboard!');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            filterListings();
+        });
+    </script>
+</body>
+</html>
