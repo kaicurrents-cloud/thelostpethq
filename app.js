@@ -3,6 +3,7 @@ let currentStep = 1;
 let petPhotoData = null;
 let petMode = 'lost'; // 'lost' or 'found'
 let flyerLanguage = 'en'; // 'en' or 'es'
+let flyerTemplate = 'classic'; // 'classic', 'bold', 'minimal'
 
 // === TRANSLATIONS ===
 const translations = {
@@ -44,6 +45,50 @@ function setFlyerLanguage(lang) {
     // Regenerate flyer
     generateFlyer();
 }
+
+function setFlyerTemplate(template) {
+    flyerTemplate = template;
+    
+    // Update button states
+    document.querySelectorAll('.template-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.template === template) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Regenerate flyer
+    generateFlyer();
+}
+
+// Template color schemes
+const templateStyles = {
+    classic: {
+        headerGradient: ['#dc2626', '#b91c1c'],
+        headerGradientFound: ['#059669', '#047857'],
+        contactGradient: ['#1e1b4b', '#312e81'],
+        contactGradientFound: ['#065f46', '#047857'],
+        accentColor: '#dc2626',
+        accentColorFound: '#059669'
+    },
+    bold: {
+        headerGradient: ['#000000', '#1a1a1a'],
+        headerGradientFound: ['#000000', '#1a1a1a'],
+        contactGradient: ['#dc2626', '#b91c1c'],
+        contactGradientFound: ['#059669', '#047857'],
+        accentColor: '#dc2626',
+        accentColorFound: '#059669'
+    },
+    minimal: {
+        headerGradient: ['#374151', '#1f2937'],
+        headerGradientFound: ['#374151', '#1f2937'],
+        contactGradient: ['#f3f4f6', '#e5e7eb'],
+        contactGradientFound: ['#f3f4f6', '#e5e7eb'],
+        accentColor: '#374151',
+        accentColorFound: '#059669',
+        contactTextDark: true
+    }
+};
 
 // === NAVIGATION ===
 function toggleMobileMenu() {
@@ -295,15 +340,12 @@ function generateFlyer() {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Gradient header - different colors for lost vs found
+    // Gradient header - use template colors
+    const style = templateStyles[flyerTemplate];
+    const headerColors = petMode === 'found' ? style.headerGradientFound : style.headerGradient;
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, 120);
-    if (petMode === 'found') {
-        gradient.addColorStop(0, '#059669');
-        gradient.addColorStop(1, '#047857');
-    } else {
-        gradient.addColorStop(0, '#dc2626');
-        gradient.addColorStop(1, '#b91c1c');
-    }
+    gradient.addColorStop(0, headerColors[0]);
+    gradient.addColorStop(1, headerColors[1]);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, 120);
     
@@ -409,7 +451,7 @@ function generateFlyer() {
         y += 35;
         
         // Location info - different label for found vs lost (translated)
-        ctx.fillStyle = petMode === 'found' ? '#059669' : '#dc2626';
+        ctx.fillStyle = petMode === 'found' ? style.accentColorFound : style.accentColor;
         ctx.font = 'bold 22px "Plus Jakarta Sans", Arial, sans-serif';
         const locationLabel = petMode === 'found' ? t.foundAt : t.lastSeen;
         ctx.fillText(locationLabel, canvas.width / 2, y);
@@ -436,19 +478,15 @@ function generateFlyer() {
         const contactBoxY = y;
         const contactBoxHeight = 110;
         
+        const contactColors = petMode === 'found' ? style.contactGradientFound : style.contactGradient;
         const contactGradient = ctx.createLinearGradient(30, contactBoxY, canvas.width - 30, contactBoxY);
-        if (petMode === 'found') {
-            contactGradient.addColorStop(0, '#065f46');
-            contactGradient.addColorStop(1, '#047857');
-        } else {
-            contactGradient.addColorStop(0, '#1e1b4b');
-            contactGradient.addColorStop(1, '#312e81');
-        }
+        contactGradient.addColorStop(0, contactColors[0]);
+        contactGradient.addColorStop(1, contactColors[1]);
         ctx.fillStyle = contactGradient;
         roundRect(ctx, 30, contactBoxY, canvas.width - 60, contactBoxHeight, 12);
         ctx.fill();
         
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = style.contactTextDark ? '#111827' : '#ffffff';
         ctx.font = 'bold 20px "Plus Jakarta Sans", Arial, sans-serif';
         const contactLabel = petMode === 'found' ? t.isThisYours : t.ifFound;
         ctx.fillText(contactLabel, canvas.width / 2, contactBoxY + 35);

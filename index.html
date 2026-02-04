@@ -483,9 +483,16 @@
                 <div class="result-card flyer-card">
                     <div class="card-header">
                         <h3>📄 Your Shareable Flyer</h3>
-                        <div class="language-toggle">
-                            <button class="lang-btn active" onclick="setFlyerLanguage('en')" data-lang="en">🇺🇸 English</button>
-                            <button class="lang-btn" onclick="setFlyerLanguage('es')" data-lang="es">🇲🇽 Español</button>
+                        <div class="flyer-options">
+                            <div class="template-toggle">
+                                <button class="template-btn active" onclick="setFlyerTemplate('classic')" data-template="classic" title="Classic Flyer">📄</button>
+                                <button class="template-btn" onclick="setFlyerTemplate('bold')" data-template="bold" title="High-Visibility">🔴</button>
+                                <button class="template-btn" onclick="setFlyerTemplate('minimal')" data-template="minimal" title="Minimal/Clean">⬜</button>
+                            </div>
+                            <div class="language-toggle">
+                                <button class="lang-btn active" onclick="setFlyerLanguage('en')" data-lang="en">EN</button>
+                                <button class="lang-btn" onclick="setFlyerLanguage('es')" data-lang="es">ES</button>
+                            </div>
                         </div>
                     </div>
                     <div class="flyer-preview">
