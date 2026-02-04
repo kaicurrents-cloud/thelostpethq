@@ -1440,3 +1440,54 @@ generateResults = function() {
     originalGenerateResults2.apply(this, arguments);
     setTimeout(displaySightings, 100);
 };
+
+// === ANIMATED COUNTERS ===
+function animateCounters() {
+    const counters = document.querySelectorAll('.trust-number[data-count]');
+    
+    counters.forEach(counter => {
+        const target = parseInt(counter.dataset.count);
+        const format = counter.dataset.format;
+        const suffix = counter.dataset.suffix || '';
+        const duration = 2000; // 2 seconds
+        const increment = target / (duration / 16);
+        let current = 0;
+        
+        const updateCounter = () => {
+            current += increment;
+            if (current < target) {
+                if (format === 'K+') {
+                    counter.textContent = Math.floor(current / 1000) + 'K+';
+                } else {
+                    counter.textContent = Math.floor(current).toLocaleString() + suffix;
+                }
+                requestAnimationFrame(updateCounter);
+            } else {
+                if (format === 'K+') {
+                    counter.textContent = (target / 1000) + 'K+';
+                } else {
+                    counter.textContent = target.toLocaleString() + suffix;
+                }
+            }
+        };
+        
+        updateCounter();
+    });
+}
+
+// Run counter animation when trust bar is visible
+document.addEventListener('DOMContentLoaded', function() {
+    const trustBar = document.querySelector('.trust-bar');
+    if (trustBar) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        observer.observe(trustBar);
+    }
+});
