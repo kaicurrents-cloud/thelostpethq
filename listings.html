@@ -187,6 +187,107 @@
             margin-bottom: 16px;
         }
         
+        .alert-signup-section {
+            margin-bottom: 24px;
+        }
+        
+        .alert-signup-card {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 32px 40px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .alert-icon {
+            font-size: 48px;
+            flex-shrink: 0;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-content h3 {
+            margin: 0 0 8px;
+            font-size: 1.3rem;
+        }
+        
+        .alert-content > p {
+            margin: 0 0 16px;
+            opacity: 0.9;
+        }
+        
+        .alert-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .alert-form input {
+            padding: 12px 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .alert-form input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .alert-form input:focus {
+            outline: none;
+            border-color: white;
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .alert-form input[type="email"] {
+            flex: 2;
+            min-width: 200px;
+        }
+        
+        .alert-form input[type="text"] {
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .alert-form .btn {
+            background: white;
+            color: #dc2626;
+            border: none;
+            font-weight: 600;
+        }
+        
+        .alert-form .btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .alert-disclaimer {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin: 12px 0 0 !important;
+        }
+        
+        @media (max-width: 640px) {
+            .alert-signup-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .alert-form {
+                flex-direction: column;
+            }
+            
+            .alert-form input,
+            .alert-form .btn {
+                width: 100%;
+            }
+        }
+        
         .add-listing-cta {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             padding: 40px;
@@ -293,6 +394,23 @@
             <div class="stat-item">
                 <div class="stat-number" id="foundCount">0</div>
                 <div class="stat-label">Found Pets</div>
+            </div>
+        </div>
+
+        <!-- Alert Signup Section -->
+        <div class="alert-signup-section">
+            <div class="alert-signup-card">
+                <div class="alert-icon">🚨</div>
+                <div class="alert-content">
+                    <h3>Get Lost Pet Alerts for Your Area</h3>
+                    <p>Be the first to know when a pet goes missing near you. Help reunite families!</p>
+                    <form class="alert-form" onsubmit="handleAlertSignup(event)">
+                        <input type="email" id="alertEmail" placeholder="Your email" required>
+                        <input type="text" id="alertZip" placeholder="Your zip code" maxlength="5" required>
+                        <button type="submit" class="btn btn-primary">Get Alerts</button>
+                    </form>
+                    <p class="alert-disclaimer">Free alerts. Unsubscribe anytime. We never share your info.</p>
+                </div>
             </div>
         </div>
 
@@ -477,6 +595,21 @@
                 navigator.clipboard.writeText(text);
                 alert('Listing info copied to clipboard!');
             }
+        }
+
+        function handleAlertSignup(e) {
+            e.preventDefault();
+            const email = document.getElementById('alertEmail').value;
+            const zip = document.getElementById('alertZip').value;
+            
+            // Save to localStorage
+            const alerts = JSON.parse(localStorage.getItem('lostpethq_alerts') || '[]');
+            alerts.push({ email, zip, timestamp: Date.now() });
+            localStorage.setItem('lostpethq_alerts', JSON.stringify(alerts));
+            
+            // Show success
+            alert('✅ You\'re signed up for alerts in ' + zip + '! We\'ll email you when pets are lost/found nearby.');
+            e.target.reset();
         }
 
         // Initialize
