@@ -1150,3 +1150,168 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// === PET ID CARD ===
+let idCardPhotoData = null;
+
+function openIdCardTool() {
+    document.getElementById('idCardModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    generateIdCard(); // Generate preview
+}
+
+function closeIdCardModal() {
+    document.getElementById('idCardModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function handleIdCardPhoto(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            idCardPhotoData = e.target.result;
+            generateIdCard();
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function generateIdCard() {
+    const canvas = document.getElementById('idCardCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    const petName = document.getElementById('idCardPetName').value || 'PET NAME';
+    const petType = document.getElementById('idCardPetType').value || 'Dog';
+    const breed = document.getElementById('idCardBreed').value || '';
+    const color = document.getElementById('idCardColor').value || '';
+    const phone = document.getElementById('idCardPhone').value || '(XXX) XXX-XXXX';
+    const microchip = document.getElementById('idCardMicrochip').value || '';
+    const medical = document.getElementById('idCardMedical').value || '';
+    
+    // Clear canvas
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Card border
+    ctx.strokeStyle = '#e5e7eb';
+    ctx.lineWidth = 3;
+    roundRect(ctx, 5, 5, canvas.width - 10, canvas.height - 10, 16);
+    ctx.stroke();
+    
+    // Header
+    const headerGradient = ctx.createLinearGradient(0, 0, canvas.width, 50);
+    headerGradient.addColorStop(0, '#667eea');
+    headerGradient.addColorStop(1, '#764ba2');
+    ctx.fillStyle = headerGradient;
+    roundRect(ctx, 5, 5, canvas.width - 10, 50, {tl: 14, tr: 14, br: 0, bl: 0});
+    ctx.fill();
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 20px "Plus Jakarta Sans", Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🪪 PET ID CARD', canvas.width / 2, 38);
+    
+    // Photo area
+    const photoX = 20;
+    const photoY = 70;
+    const photoSize = 100;
+    
+    if (idCardPhotoData) {
+        const img = new Image();
+        img.onload = function() {
+            ctx.save();
+            roundRect(ctx, photoX, photoY, photoSize, photoSize, 10);
+            ctx.clip();
+            
+            // Center crop
+            const scale = Math.max(photoSize / img.width, photoSize / img.height);
+            const w = img.width * scale;
+            const h = img.height * scale;
+            const x = photoX + (photoSize - w) / 2;
+            const y = photoY + (photoSize - h) / 2;
+            ctx.drawImage(img, x, y, w, h);
+            ctx.restore();
+            
+            // Photo border
+            ctx.strokeStyle = '#d1d5db';
+            ctx.lineWidth = 2;
+            roundRect(ctx, photoX, photoY, photoSize, photoSize, 10);
+            ctx.stroke();
+        };
+        img.src = idCardPhotoData;
+    } else {
+        // Placeholder
+        ctx.fillStyle = '#f3f4f6';
+        roundRect(ctx, photoX, photoY, photoSize, photoSize, 10);
+        ctx.fill();
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '40px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('📷', photoX + photoSize/2, photoY + photoSize/2 + 15);
+    }
+    
+    // Info section
+    const infoX = 140;
+    let infoY = 85;
+    
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#111827';
+    ctx.font = 'bold 24px "Plus Jakarta Sans", Arial, sans-serif';
+    ctx.fillText(petName.toUpperCase(), infoX, infoY);
+    infoY += 28;
+    
+    ctx.fillStyle = '#6b7280';
+    ctx.font = '14px "Plus Jakarta Sans", Arial, sans-serif';
+    let details = petType;
+    if (breed) details += ' • ' + breed;
+    if (color) details += ' • ' + color;
+    ctx.fillText(details, infoX, infoY);
+    infoY += 25;
+    
+    ctx.fillStyle = '#111827';
+    ctx.font = 'bold 16px "Plus Jakarta Sans", Arial, sans-serif';
+    ctx.fillText('📞 ' + phone, infoX, infoY);
+    infoY += 22;
+    
+    if (microchip) {
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '12px "Plus Jakarta Sans", Arial, sans-serif';
+        ctx.fillText('Microchip: ' + microchip, infoX, infoY);
+        infoY += 18;
+    }
+    
+    // Medical notes at bottom
+    if (medical) {
+        ctx.fillStyle = '#dc2626';
+        ctx.font = '12px "Plus Jakarta Sans", Arial, sans-serif';
+        const medicalText = '⚠️ ' + medical;
+        ctx.fillText(medicalText.substring(0, 50), 20, canvas.height - 45);
+    }
+    
+    // Footer
+    ctx.fillStyle = '#9ca3af';
+    ctx.font = '10px "Plus Jakarta Sans", Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('TheLostPetHQ.com — Keep this card in your wallet', canvas.width / 2, canvas.height - 15);
+}
+
+function downloadIdCard() {
+    generateIdCard();
+    setTimeout(() => {
+        const canvas = document.getElementById('idCardCanvas');
+        const link = document.createElement('a');
+        const petName = document.getElementById('idCardPetName').value || 'pet';
+        link.download = petName.toUpperCase().replace(/\s+/g, '-') + '-ID-card.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }, 100);
+}
+
+// Update preview on input change
+document.addEventListener('DOMContentLoaded', function() {
+    const idCardInputs = document.querySelectorAll('#idCardModal input, #idCardModal select');
+    idCardInputs.forEach(input => {
+        input.addEventListener('input', generateIdCard);
+    });
+});

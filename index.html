@@ -994,6 +994,36 @@
     </section>
 
     <!-- CTA Section -->
+    <!-- Pet ID Card Section -->
+    <section class="id-card-section">
+        <div class="container">
+            <div class="id-card-promo">
+                <div class="id-card-text">
+                    <span class="promo-badge">🆓 Free Prevention Tool</span>
+                    <h2>Pet ID Card Generator</h2>
+                    <p>Create a wallet-sized ID card for your pet — <strong>before</strong> they go missing. Includes photo, your contact info, and medical notes. Print it, keep it in your wallet.</p>
+                    <button class="btn btn-primary btn-large" onclick="openIdCardTool()">
+                        <span class="btn-icon">🪪</span>
+                        Create Pet ID Card
+                    </button>
+                </div>
+                <div class="id-card-preview">
+                    <div class="id-card-sample">
+                        <div class="id-card-header">PET ID CARD</div>
+                        <div class="id-card-body">
+                            <div class="id-card-photo">🐕</div>
+                            <div class="id-card-info">
+                                <div class="id-card-name">MAX</div>
+                                <div class="id-card-detail">Golden Retriever</div>
+                                <div class="id-card-detail">📞 (555) 123-4567</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
@@ -1042,6 +1072,71 @@
             </div>
         </div>
     </footer>
+
+    <!-- Pet ID Card Modal -->
+    <div class="modal" id="idCardModal">
+        <div class="modal-overlay" onclick="closeIdCardModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeIdCardModal()">×</button>
+            <h2>🪪 Create Pet ID Card</h2>
+            <p>Fill in your pet's details. Keep this card in your wallet!</p>
+            
+            <div class="id-card-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Pet Name *</label>
+                        <input type="text" id="idCardPetName" placeholder="Max" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pet Type</label>
+                        <select id="idCardPetType">
+                            <option value="Dog">Dog</option>
+                            <option value="Cat">Cat</option>
+                            <option value="Bird">Bird</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Breed</label>
+                        <input type="text" id="idCardBreed" placeholder="Golden Retriever">
+                    </div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        <input type="text" id="idCardColor" placeholder="Golden">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Your Phone *</label>
+                        <input type="tel" id="idCardPhone" placeholder="(555) 123-4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Microchip # (optional)</label>
+                        <input type="text" id="idCardMicrochip" placeholder="123456789">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Medical Notes (allergies, meds)</label>
+                    <input type="text" id="idCardMedical" placeholder="Takes daily heart medication">
+                </div>
+                <div class="form-group">
+                    <label>Pet Photo</label>
+                    <input type="file" id="idCardPhoto" accept="image/*" onchange="handleIdCardPhoto(event)">
+                </div>
+            </div>
+            
+            <div class="id-card-preview-container">
+                <canvas id="idCardCanvas" width="450" height="280"></canvas>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="generateIdCard()">Generate Card</button>
+                <button class="btn btn-secondary" onclick="downloadIdCard()">Download Card</button>
+            </div>
+        </div>
+    </div>
 
     <script defer src="app.js"></script>
 </body>

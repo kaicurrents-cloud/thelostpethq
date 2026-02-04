@@ -2258,3 +2258,221 @@ a:focus-visible {
     flex-wrap: wrap;
     gap: 12px;
 }
+
+/* === PET ID CARD SECTION === */
+.id-card-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+.id-card-promo {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.id-card-text {
+    flex: 1;
+}
+
+.promo-badge {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.id-card-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    color: var(--gray-900);
+}
+
+.id-card-text p {
+    font-size: 1.1rem;
+    color: var(--gray-600);
+    margin-bottom: 24px;
+    line-height: 1.7;
+}
+
+.id-card-preview {
+    flex-shrink: 0;
+}
+
+.id-card-sample {
+    width: 280px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transform: rotate(3deg);
+}
+
+.id-card-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px;
+    font-weight: 700;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.id-card-body {
+    display: flex;
+    padding: 16px;
+    gap: 16px;
+}
+
+.id-card-photo {
+    width: 70px;
+    height: 70px;
+    background: #f3f4f6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+}
+
+.id-card-info {
+    flex: 1;
+}
+
+.id-card-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--gray-900);
+}
+
+.id-card-detail {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+    .id-card-promo {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .id-card-sample {
+        transform: rotate(0);
+    }
+}
+
+/* === MODAL === */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    position: relative;
+    background: white;
+    padding: 32px;
+    border-radius: 20px;
+    max-width: 550px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--gray-400);
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: var(--gray-600);
+}
+
+.modal-content h2 {
+    margin-bottom: 8px;
+}
+
+.modal-content > p {
+    color: var(--gray-600);
+    margin-bottom: 24px;
+}
+
+.id-card-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.id-card-preview-container {
+    background: #f9fafb;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+#idCardCanvas {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.modal-actions .btn {
+    flex: 1;
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+}
