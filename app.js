@@ -302,6 +302,9 @@ function generateResults() {
         // Load flyer locations (simulated)
         loadFlyerLocations();
         
+        // Save to pet database
+        savePetToDatabase();
+        
         // Remove loading overlay
         loadingOverlay.remove();
         
@@ -1510,4 +1513,42 @@ function handleCertWaitlist(e) {
     if (typeof gtag !== 'undefined') {
         gtag('event', 'cert_waitlist', { event_category: 'conversion' });
     }
+}
+
+// === SAVE TO DATABASE ===
+function savePetToDatabase() {
+    const pet = {
+        id: Date.now(),
+        status: petMode,
+        name: document.getElementById('petName').value.trim() || 'Unknown',
+        type: document.getElementById('petType').value.toLowerCase(),
+        breed: document.getElementById('petBreed').value.trim() || 'Unknown',
+        color: document.getElementById('petColor').value.trim() || '',
+        size: document.getElementById('petSize').value || '',
+        features: document.getElementById('petFeatures').value.trim() || '',
+        location: document.getElementById('lastLocation').value.trim(),
+        zip: document.getElementById('zipCode').value.trim(),
+        date: document.getElementById('lastDate').value,
+        phone: document.getElementById('ownerPhone').value.trim(),
+        email: document.getElementById('ownerEmail').value.trim() || '',
+        ownerName: document.getElementById('ownerName').value.trim(),
+        photo: petPhotoData, // Base64 photo if uploaded
+        createdAt: new Date().toISOString()
+    };
+    
+    // Get existing listings
+    const listings = JSON.parse(localStorage.getItem('lostpethq_listings') || '[]');
+    
+    // Add new listing at the beginning
+    listings.unshift(pet);
+    
+    // Keep only last 100 listings (localStorage limit)
+    if (listings.length > 100) {
+        listings.pop();
+    }
+    
+    // Save
+    localStorage.setItem('lostpethq_listings', JSON.stringify(listings));
+    
+    console.log('Pet saved to database:', pet.name);
 }
