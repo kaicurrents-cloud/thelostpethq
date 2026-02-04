@@ -629,6 +629,25 @@
                 </div>
             </div>
 
+            <!-- Email Capture Section -->
+            <div class="email-capture-section">
+                <div class="email-capture-card">
+                    <div class="email-capture-icon">📬</div>
+                    <h3>Get Our Free Pet Safety Guide</h3>
+                    <p>7 proven tips to prevent your pet from getting lost again, plus early warning signs they might bolt.</p>
+                    <form class="email-form" onsubmit="handleEmailSubmit(event)">
+                        <div class="email-input-group">
+                            <input type="email" id="emailCapture" placeholder="Enter your email" required>
+                            <button type="submit" class="btn btn-primary">Send Guide</button>
+                        </div>
+                        <p class="email-disclaimer">No spam. Unsubscribe anytime. We're pet people too.</p>
+                    </form>
+                    <div id="emailSuccess" class="email-success" style="display:none;">
+                        ✅ Check your inbox! Guide is on its way.
+                    </div>
+                </div>
+            </div>
+
             <!-- Prevention Section -->
             <div class="prevention-section">
                 <div class="prevention-header">

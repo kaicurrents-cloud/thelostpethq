@@ -579,6 +579,29 @@ function fallbackShare(text) {
     });
 }
 
+// === EMAIL CAPTURE ===
+function handleEmailSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('emailCapture').value;
+    
+    // TODO: Connect to email service (Mailchimp, ConvertKit, etc.)
+    // For now, store in localStorage and show success
+    const emails = JSON.parse(localStorage.getItem('lostpethq_emails') || '[]');
+    emails.push({ email, timestamp: Date.now() });
+    localStorage.setItem('lostpethq_emails', JSON.stringify(emails));
+    
+    // Hide form, show success
+    document.querySelector('.email-form').style.display = 'none';
+    document.getElementById('emailSuccess').style.display = 'block';
+    
+    // Track in analytics if available
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'email_signup', { event_category: 'engagement' });
+    }
+    
+    console.log('Email captured:', email);
+}
+
 // === START OVER ===
 function startOver() {
     // Reset form
