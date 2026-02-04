@@ -2817,3 +2817,31 @@ a:focus-visible {
         grid-column: span 1;
     }
 }
+
+/* === ENHANCED TESTIMONIALS === */
+.testimonial-card {
+    position: relative;
+}
+
+.reunite-badge {
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    background: linear-gradient(135deg, #059669, #10b981);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.testimonial-text {
+    line-height: 1.7;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
