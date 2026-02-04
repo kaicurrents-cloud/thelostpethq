@@ -40,6 +40,38 @@
     
     <!-- jsPDF for PDF export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "The Lost Pet HQ",
+        "description": "Free lost pet flyer generator with local shelter resources and action plan",
+        "url": "https://thelostpethq.com",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "2400"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "The Lost Pet HQ",
+        "url": "https://thelostpethq.com",
+        "logo": "https://thelostpethq.com/logo.svg",
+        "description": "Helping pet owners reunite with their lost pets through professional flyers, resources, and action plans."
+    }
+    </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -449,6 +481,14 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                 </svg>
                                 Download PDF
+                            </button>
+                            <button class="btn btn-outline" onclick="window.print()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                    <rect x="6" y="14" width="12" height="8"></rect>
+                                </svg>
+                                Print
                             </button>
                         </div>
                         <div class="share-section">

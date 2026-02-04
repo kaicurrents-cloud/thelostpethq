@@ -1713,3 +1713,60 @@ section {
         padding: 24px 20px;
     }
 }
+
+/* === PRINT STYLES === */
+@media print {
+    body {
+        background: white !important;
+    }
+    
+    .navbar,
+    .mobile-menu,
+    .hero,
+    .how-it-works,
+    .trust-section,
+    .testimonials,
+    .prevention-section,
+    .email-capture-section,
+    .footer,
+    .flyer-actions,
+    .checklist-card,
+    .resources-card,
+    .sidebar,
+    .btn {
+        display: none !important;
+    }
+    
+    .results-section {
+        padding: 0 !important;
+    }
+    
+    .result-card.flyer-card {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+    
+    #flyerCanvas {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 8in !important;
+    }
+    
+    .card-header {
+        display: none !important;
+    }
+}
+
+/* === OUTLINE BUTTON === */
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--gray-300);
+    color: var(--gray-700);
+}
+
+.btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(102, 126, 234, 0.05);
+}
