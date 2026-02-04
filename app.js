@@ -890,6 +890,52 @@ function updateTimeElapsed(dateStr, timeStr) {
     alertEl.className = 'time-alert ' + alertClass;
 }
 
+// === KEYBOARD SHORTCUTS ===
+document.addEventListener('keydown', function(e) {
+    // Only when results are visible
+    const resultsVisible = document.getElementById('resultsSection').style.display !== 'none';
+    if (!resultsVisible) return;
+    
+    // Ctrl/Cmd + D = Download JPG
+    if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault();
+        downloadFlyer();
+        showToast('Downloading flyer...');
+    }
+    
+    // Ctrl/Cmd + P = Print
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        window.print();
+    }
+    
+    // Ctrl/Cmd + Shift + C = Copy image
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        copyFlyerToClipboard();
+    }
+});
+
+function showToast(message) {
+    // Remove existing toast
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    // Trigger animation
+    setTimeout(() => toast.classList.add('show'), 10);
+    
+    // Remove after 3s
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
 // === TIPS ACCORDION ===
 function toggleTip(button) {
     const item = button.parentElement;

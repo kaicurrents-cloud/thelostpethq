@@ -2126,3 +2126,69 @@ section {
     background: #d33426;
     transform: translateY(-2px);
 }
+
+/* === TOAST NOTIFICATIONS === */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--gray-900);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* === KEYBOARD SHORTCUT HINTS === */
+.shortcut-hint {
+    display: none;
+    font-size: 0.7rem;
+    color: var(--gray-400);
+    margin-top: 4px;
+}
+
+@media (min-width: 768px) {
+    .shortcut-hint {
+        display: block;
+    }
+}
+
+/* === FOCUS STYLES (Accessibility) === */
+.btn:focus-visible,
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.checklist-item input:focus-visible + .checkbox-custom {
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+/* Skip link for accessibility */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary);
+    color: white;
+    padding: 8px 16px;
+    z-index: 10000;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
