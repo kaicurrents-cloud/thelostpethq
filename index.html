@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Lost Pet HQ - Lost Pet Rapid Response Tool</title>
+    <meta name="description" content="Lost your pet? Generate a shareable flyer, get local shelter contacts, and take action fast. Free tool to help bring your pet home.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">The Lost Pet HQ</span>
+            </div>
+            <p class="tagline">Your Rapid Response Headquarters</p>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <h1>Bring Your Pet Home <span class="highlight">Fast</span></h1>
+            <p>Generate a professional flyer, get local resources, and take action — all in under 2 minutes.</p>
+            <button class="btn btn-primary btn-large" onclick="startForm()">
+                🚨 My Pet Is Lost — Help Me Now
+            </button>
+            <p class="reassurance">Free • No signup required • Works instantly</p>
+        </section>
+
+        <!-- Main Form Section -->
+        <section class="form-section" id="formSection" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="step-indicator">Step <span id="currentStep">1</span> of 4</div>
+
+            <!-- Step 1: Basic Info -->
+            <div class="form-step" id="step1">
+                <h2>Tell us about your pet</h2>
+                <div class="form-group">
+                    <label for="petName">Pet's Name *</label>
+                    <input type="text" id="petName" placeholder="e.g., Max" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petType">Type *</label>
+                        <select id="petType" required>
+                            <option value="">Select...</option>
+                            <option value="Dog">Dog</option>
+                            <option value="Cat">Cat</option>
+                            <option value="Bird">Bird</option>
+                            <option value="Rabbit">Rabbit</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="petBreed">Breed</label>
+                        <input type="text" id="petBreed" placeholder="e.g., Golden Retriever">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petColor">Color(s) *</label>
+                        <input type="text" id="petColor" placeholder="e.g., Golden, White chest" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="petSize">Size</label>
+                        <select id="petSize">
+                            <option value="">Select...</option>
+                            <option value="Small (under 20 lbs)">Small (under 20 lbs)</option>
+                            <option value="Medium (20-50 lbs)">Medium (20-50 lbs)</option>
+                            <option value="Large (50-90 lbs)">Large (50-90 lbs)</option>
+                            <option value="X-Large (90+ lbs)">X-Large (90+ lbs)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="petFeatures">Distinguishing Features</label>
+                    <textarea id="petFeatures" placeholder="e.g., Red collar with bone tag, scar on left ear, limps slightly"></textarea>
+                </div>
+                <div class="form-nav">
+                    <button class="btn btn-secondary" onclick="goToHero()">← Back</button>
+                    <button class="btn btn-primary" onclick="nextStep(2)">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Photo Upload -->
+            <div class="form-step" id="step2" style="display: none;">
+                <h2>Upload a photo</h2>
+                <p class="step-desc">A clear, recent photo dramatically increases the chances of being found.</p>
+                <div class="photo-upload" id="photoUpload">
+                    <input type="file" id="petPhoto" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
+                    <div class="upload-placeholder" id="uploadPlaceholder" onclick="document.getElementById('petPhoto').click()">
+                        <span class="upload-icon">📷</span>
+                        <span>Click to upload photo</span>
+                        <span class="upload-hint">JPG, PNG — clear face shot works best</span>
+                    </div>
+                    <div class="photo-preview" id="photoPreview" style="display: none;">
+                        <img id="previewImg" src="" alt="Pet photo preview">
+                        <button class="btn-remove-photo" onclick="removePhoto()">✕ Remove</button>
+                    </div>
+                </div>
+                <div class="form-nav">
+                    <button class="btn btn-secondary" onclick="prevStep(1)">← Back</button>
+                    <button class="btn btn-primary" onclick="nextStep(3)">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Location -->
+            <div class="form-step" id="step3" style="display: none;">
+                <h2>Where did you last see them?</h2>
+                <div class="form-group">
+                    <label for="lastLocation">Last Seen Location *</label>
+                    <input type="text" id="lastLocation" placeholder="e.g., 123 Main St, Boise, ID or 'Near Central Park'" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lastDate">Date Lost *</label>
+                        <input type="date" id="lastDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastTime">Approximate Time</label>
+                        <input type="time" id="lastTime">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="zipCode">Zip Code * (for local resources)</label>
+                    <input type="text" id="zipCode" placeholder="e.g., 83702" maxlength="10" required>
+                </div>
+                <div class="form-nav">
+                    <button class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+                    <button class="btn btn-primary" onclick="nextStep(4)">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Contact Info -->
+            <div class="form-step" id="step4" style="display: none;">
+                <h2>Your contact info</h2>
+                <p class="step-desc">This goes on the flyer so finders can reach you.</p>
+                <div class="form-group">
+                    <label for="ownerName">Your Name *</label>
+                    <input type="text" id="ownerName" placeholder="e.g., John Smith" required>
+                </div>
+                <div class="form-group">
+                    <label for="ownerPhone">Phone Number *</label>
+                    <input type="tel" id="ownerPhone" placeholder="e.g., (208) 555-1234" required>
+                </div>
+                <div class="form-group">
+                    <label for="ownerEmail">Email (optional)</label>
+                    <input type="email" id="ownerEmail" placeholder="e.g., john@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="rewardAmount">Reward Amount (optional)</label>
+                    <input type="text" id="rewardAmount" placeholder="e.g., $100">
+                </div>
+                <div class="form-nav">
+                    <button class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
+                    <button class="btn btn-primary btn-generate" onclick="generateResults()">🚀 Generate My Flyer & Resources</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <h2>✅ Your PawAlert Kit is Ready!</h2>
+            
+            <!-- Flyer Preview -->
+            <div class="result-card">
+                <h3>📄 Your Shareable Flyer</h3>
+                <div class="flyer-container">
+                    <canvas id="flyerCanvas" width="800" height="1000"></canvas>
+                </div>
+                <div class="flyer-actions">
+                    <button class="btn btn-primary" onclick="downloadFlyer()">⬇️ Download Flyer (JPG)</button>
+                    <button class="btn btn-secondary" onclick="shareFlyer()">📤 Share</button>
+                </div>
+            </div>
+
+            <!-- Action Checklist -->
+            <div class="result-card">
+                <h3>✅ Action Checklist</h3>
+                <p class="checklist-intro">Do these NOW — the first 24 hours are critical:</p>
+                <div class="checklist">
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Walk your neighborhood calling their name (bring treats/favorite toy)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Check hiding spots: under porches, in garages, bushes, sheds</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Ask immediate neighbors if they've seen anything</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Post on Nextdoor (highest local reach)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Post in local Facebook lost pet groups</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Call local shelters (do this daily — new animals come in constantly)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Visit shelters in person (photos don't always match)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Notify local vet offices — finders often bring strays there</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Put up physical flyers at intersections, parks, coffee shops</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Leave your garage/door slightly open with food, bedding, worn clothing</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Post on PawBoost, PetFBI, and Craigslist lost & found</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox">
+                        <span>Check if microchip registration info is current</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Local Resources -->
+            <div class="result-card">
+                <h3>📍 Local Resources Near <span id="resourceZip"></span></h3>
+                <div class="resources-grid" id="resourcesGrid">
+                    <div class="resource-item">
+                        <h4>🏠 Find Local Shelters</h4>
+                        <p>Search shelters in your area and call them daily.</p>
+                        <a href="https://www.petfinder.com/animal-shelters-and-rescues/" target="_blank" class="btn btn-secondary">Search PetFinder →</a>
+                    </div>
+                    <div class="resource-item">
+                        <h4>📱 Post on Nextdoor</h4>
+                        <p>Highest reach for local neighbors. Post in "Lost & Found Pets".</p>
+                        <a href="https://nextdoor.com" target="_blank" class="btn btn-secondary">Open Nextdoor →</a>
+                    </div>
+                    <div class="resource-item">
+                        <h4>📘 Facebook Groups</h4>
+                        <p>Search "[Your City] Lost Pets" and join multiple groups.</p>
+                        <a href="https://www.facebook.com/search/groups/?q=lost%20pets" target="_blank" class="btn btn-secondary">Find Groups →</a>
+                    </div>
+                    <div class="resource-item">
+                        <h4>🐾 PawBoost</h4>
+                        <p>Free lost pet alert service with local reach.</p>
+                        <a href="https://www.pawboost.com" target="_blank" class="btn btn-secondary">Post on PawBoost →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prevention CTA (Affiliate Section) -->
+            <div class="result-card prevention-card">
+                <h3>🛡️ Never Lose Them Again</h3>
+                <p>Once you find your pet, protect them with these tools:</p>
+                <div class="prevention-grid">
+                    <a href="https://www.amazon.com/s?k=gps+pet+tracker&tag=YOURTAG-20" target="_blank" class="prevention-item">
+                        <span class="prevention-icon">📍</span>
+                        <span class="prevention-title">GPS Tracker</span>
+                        <span class="prevention-desc">Real-time location tracking</span>
+                    </a>
+                    <a href="https://www.amazon.com/s?k=airtag+pet+collar&tag=YOURTAG-20" target="_blank" class="prevention-item">
+                        <span class="prevention-icon">🏷️</span>
+                        <span class="prevention-title">AirTag Collar</span>
+                        <span class="prevention-desc">Apple's Find My network</span>
+                    </a>
+                    <a href="https://www.amazon.com/s?k=qr+code+pet+tag&tag=YOURTAG-20" target="_blank" class="prevention-item">
+                        <span class="prevention-icon">📱</span>
+                        <span class="prevention-title">QR Code Tag</span>
+                        <span class="prevention-desc">Scannable contact info</span>
+                    </a>
+                    <a href="https://www.amazon.com/s?k=pet+microchip&tag=YOURTAG-20" target="_blank" class="prevention-item">
+                        <span class="prevention-icon">💉</span>
+                        <span class="prevention-title">Microchipping</span>
+                        <span class="prevention-desc">Permanent ID backup</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Start Over -->
+            <div class="start-over">
+                <button class="btn btn-secondary" onclick="startOver()">← Start Over</button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Made with ❤️ to help bring pets home</p>
+            <p class="footer-links">
+                <a href="#" onclick="showAbout()">About</a> •
+                <a href="#" onclick="showContact()">Contact</a>
+            </p>
+            <p class="footer-brand">TheLostPetHQ.com</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
