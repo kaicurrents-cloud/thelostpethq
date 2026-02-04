@@ -2094,3 +2094,14 @@ section {
 .tip-content strong {
     color: var(--gray-800);
 }
+
+/* === WHATSAPP BUTTON === */
+.btn-whatsapp {
+    background: #25D366;
+    color: white;
+}
+
+.btn-whatsapp:hover {
+    background: #20bd5a;
+    transform: translateY(-2px);
+}

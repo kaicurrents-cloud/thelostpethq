@@ -594,6 +594,53 @@ Please RT! 🙏 #LostPet #LostDog #LostCat`);
     window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'width=600,height=400');
 }
 
+function shareToWhatsApp() {
+    const petName = document.getElementById('petName').value.trim();
+    const petType = document.getElementById('petType').value;
+    const lastLocation = document.getElementById('lastLocation').value.trim();
+    const ownerPhone = document.getElementById('ownerPhone').value.trim();
+    
+    const text = encodeURIComponent(`🚨 *LOST ${petType.toUpperCase()}*: ${petName}
+
+📍 Last seen: ${lastLocation}
+📞 Contact: ${ownerPhone}
+
+Please share with your neighbors! 🙏
+_Flyer created at TheLostPetHQ.com_`);
+    
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+    
+    // Prompt to download flyer
+    setTimeout(() => {
+        alert('Tip: Download your flyer first, then attach it to your WhatsApp message!');
+    }, 500);
+}
+
+async function copyFlyerToClipboard() {
+    const canvas = document.getElementById('flyerCanvas');
+    const btn = event.target.closest('button');
+    
+    try {
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+        ]);
+        
+        // Show feedback
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.remove('copied');
+        }, 2000);
+    } catch (err) {
+        // Fallback - download instead
+        alert('Clipboard copy not supported in this browser. Downloading instead...');
+        downloadFlyer();
+    }
+}
+
 function copyShareLink() {
     const petName = document.getElementById('petName').value.trim();
     const petType = document.getElementById('petType').value;
