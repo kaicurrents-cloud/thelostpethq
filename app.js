@@ -3,50 +3,75 @@ let currentStep = 1;
 let petPhotoData = null;
 
 // === NAVIGATION ===
+function toggleMobileMenu() {
+    document.getElementById('mobileMenu').classList.toggle('active');
+}
+
 function startForm() {
     document.getElementById('hero').style.display = 'none';
+    document.querySelector('.trust-bar').style.display = 'none';
+    document.querySelector('.how-it-works').style.display = 'none';
+    document.querySelector('.resources-section').style.display = 'none';
+    document.querySelector('.testimonials-section').style.display = 'none';
+    document.querySelector('.cta-section').style.display = 'none';
     document.getElementById('formSection').style.display = 'block';
-    document.getElementById('step1').style.display = 'block';
+    document.getElementById('step1').classList.add('active');
     currentStep = 1;
-    updateProgress();
+    updateProgressSteps();
     
     // Set default date to today
     document.getElementById('lastDate').valueAsDate = new Date();
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function goToHero() {
-    document.getElementById('hero').style.display = 'block';
+    document.getElementById('hero').style.display = 'flex';
+    document.querySelector('.trust-bar').style.display = 'block';
+    document.querySelector('.how-it-works').style.display = 'block';
+    document.querySelector('.resources-section').style.display = 'block';
+    document.querySelector('.testimonials-section').style.display = 'block';
+    document.querySelector('.cta-section').style.display = 'block';
     document.getElementById('formSection').style.display = 'none';
     hideAllSteps();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function nextStep(step) {
     if (!validateCurrentStep()) return;
+    
+    // Mark current step as completed
+    document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('completed');
+    document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
+    
     hideAllSteps();
-    document.getElementById('step' + step).style.display = 'block';
+    document.getElementById('step' + step).classList.add('active');
     currentStep = step;
-    updateProgress();
+    updateProgressSteps();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function prevStep(step) {
     hideAllSteps();
-    document.getElementById('step' + step).style.display = 'block';
+    document.getElementById('step' + step).classList.add('active');
     currentStep = step;
-    updateProgress();
+    updateProgressSteps();
 }
 
 function hideAllSteps() {
     for (let i = 1; i <= 4; i++) {
-        document.getElementById('step' + i).style.display = 'none';
+        document.getElementById('step' + i).classList.remove('active');
     }
 }
 
-function updateProgress() {
-    const fill = document.getElementById('progressFill');
-    const indicator = document.getElementById('currentStep');
-    fill.style.width = (currentStep * 25) + '%';
-    indicator.textContent = currentStep;
+function updateProgressSteps() {
+    document.querySelectorAll('.progress-step').forEach(step => {
+        const stepNum = parseInt(step.dataset.step);
+        step.classList.remove('active');
+        if (stepNum === currentStep) {
+            step.classList.add('active');
+        }
+    });
 }
 
 // === VALIDATION ===
@@ -59,7 +84,7 @@ function validateCurrentStep() {
         const color = document.getElementById('petColor').value.trim();
         
         if (!name || !type || !color) {
-            alert('Please fill in the required fields (Name, Type, and Color)');
+            showError('Please fill in the required fields (Name, Type, and Color)');
             return false;
         }
     }
@@ -70,7 +95,7 @@ function validateCurrentStep() {
         const zip = document.getElementById('zipCode').value.trim();
         
         if (!location || !date || !zip) {
-            alert('Please fill in the location, date, and zip code');
+            showError('Please fill in the location, date, and zip code');
             return false;
         }
     }
@@ -80,12 +105,17 @@ function validateCurrentStep() {
         const phone = document.getElementById('ownerPhone').value.trim();
         
         if (!name || !phone) {
-            alert('Please enter your name and phone number');
+            showError('Please enter your name and phone number');
             return false;
         }
     }
     
     return true;
+}
+
+function showError(message) {
+    // Simple alert for now, can be enhanced with a toast
+    alert(message);
 }
 
 // === PHOTO HANDLING ===
@@ -98,6 +128,7 @@ function handlePhotoUpload(event) {
         petPhotoData = e.target.result;
         document.getElementById('uploadPlaceholder').style.display = 'none';
         document.getElementById('photoPreview').style.display = 'block';
+        document.getElementById('photoPreview').classList.add('active');
         document.getElementById('previewImg').src = petPhotoData;
     };
     reader.readAsDataURL(file);
@@ -108,6 +139,7 @@ function removePhoto() {
     document.getElementById('petPhoto').value = '';
     document.getElementById('uploadPlaceholder').style.display = 'flex';
     document.getElementById('photoPreview').style.display = 'none';
+    document.getElementById('photoPreview').classList.remove('active');
 }
 
 // === GENERATE RESULTS ===
@@ -117,11 +149,14 @@ function generateResults() {
     document.getElementById('formSection').style.display = 'none';
     document.getElementById('resultsSection').style.display = 'block';
     
-    // Set zip in resources header
-    document.getElementById('resourceZip').textContent = document.getElementById('zipCode').value;
+    // Set zip in map header
+    document.getElementById('mapZipCode').textContent = document.getElementById('zipCode').value;
     
     // Generate the flyer
     generateFlyer();
+    
+    // Load flyer locations (simulated)
+    loadFlyerLocations();
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -140,7 +175,6 @@ function generateFlyer() {
     const petFeatures = document.getElementById('petFeatures').value.trim();
     const lastLocation = document.getElementById('lastLocation').value.trim();
     const lastDate = document.getElementById('lastDate').value;
-    const ownerName = document.getElementById('ownerName').value.trim();
     const ownerPhone = document.getElementById('ownerPhone').value.trim();
     const ownerEmail = document.getElementById('ownerEmail').value.trim();
     const rewardAmount = document.getElementById('rewardAmount').value.trim();
@@ -158,13 +192,16 @@ function generateFlyer() {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Red header bar
-    ctx.fillStyle = '#e63946';
+    // Gradient header
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 120);
+    gradient.addColorStop(0, '#dc2626');
+    gradient.addColorStop(1, '#b91c1c');
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, 120);
     
     // "LOST" text
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 72px Inter, Arial, sans-serif';
+    ctx.font = 'bold 72px "Plus Jakarta Sans", Arial, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('LOST ' + petType.toUpperCase(), canvas.width / 2, 85);
     
@@ -175,7 +212,6 @@ function generateFlyer() {
     if (petPhotoData) {
         const img = new Image();
         img.onload = function() {
-            // Calculate dimensions to fit photo
             const maxWidth = canvas.width - 80;
             const maxHeight = photoHeight;
             let width = img.width;
@@ -193,52 +229,48 @@ function generateFlyer() {
             const x = (canvas.width - width) / 2;
             const y = photoY + (photoHeight - height) / 2;
             
-            // Draw photo with rounded corners effect (draw as rectangle for simplicity)
+            // Draw photo with rounded corners
             ctx.save();
-            ctx.beginPath();
-            ctx.roundRect(x, y, width, height, 12);
+            roundRect(ctx, x, y, width, height, 16);
             ctx.clip();
             ctx.drawImage(img, x, y, width, height);
             ctx.restore();
             
             // Draw border
-            ctx.strokeStyle = '#dee2e6';
+            ctx.strokeStyle = '#e5e7eb';
             ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.roundRect(x, y, width, height, 12);
+            roundRect(ctx, x, y, width, height, 16);
             ctx.stroke();
             
-            // Continue drawing rest of flyer
             drawFlyerContent();
         };
         img.src = petPhotoData;
     } else {
         // No photo placeholder
-        ctx.fillStyle = '#f1f3f4';
-        ctx.beginPath();
-        ctx.roundRect(40, photoY, canvas.width - 80, photoHeight, 12);
+        ctx.fillStyle = '#f3f4f6';
+        roundRect(ctx, 40, photoY, canvas.width - 80, photoHeight, 16);
         ctx.fill();
         
-        ctx.fillStyle = '#6c757d';
-        ctx.font = '24px Inter, Arial, sans-serif';
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '24px "Plus Jakarta Sans", Arial, sans-serif';
         ctx.fillText('No Photo Available', canvas.width / 2, photoY + photoHeight / 2);
         
         drawFlyerContent();
     }
     
     function drawFlyerContent() {
-        let y = photoY + photoHeight + 40;
+        let y = photoY + photoHeight + 50;
         
         // Pet name
-        ctx.fillStyle = '#1d3557';
-        ctx.font = 'bold 48px Inter, Arial, sans-serif';
+        ctx.fillStyle = '#111827';
+        ctx.font = 'bold 56px "Plus Jakarta Sans", Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(petName.toUpperCase(), canvas.width / 2, y);
         y += 50;
         
-        // Breed and details line
-        ctx.font = '24px Inter, Arial, sans-serif';
-        ctx.fillStyle = '#495057';
+        // Breed and details
+        ctx.font = '26px "Plus Jakarta Sans", Arial, sans-serif';
+        ctx.fillStyle = '#4b5563';
         let detailsLine = petBreed || petType;
         if (petColor) detailsLine += ' • ' + petColor;
         if (petSize) detailsLine += ' • ' + petSize;
@@ -247,9 +279,9 @@ function generateFlyer() {
         
         // Distinguishing features
         if (petFeatures) {
-            ctx.font = 'italic 20px Inter, Arial, sans-serif';
-            ctx.fillStyle = '#6c757d';
-            const features = wrapText(ctx, '"' + petFeatures + '"', canvas.width - 100);
+            ctx.font = 'italic 20px "Plus Jakarta Sans", Arial, sans-serif';
+            ctx.fillStyle = '#6b7280';
+            const features = wrapText(ctx, '"' + petFeatures + '"', canvas.width - 120);
             features.forEach(line => {
                 ctx.fillText(line, canvas.width / 2, y);
                 y += 28;
@@ -258,63 +290,85 @@ function generateFlyer() {
         }
         
         // Divider
-        ctx.strokeStyle = '#dee2e6';
+        ctx.strokeStyle = '#e5e7eb';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(60, y);
-        ctx.lineTo(canvas.width - 60, y);
+        ctx.moveTo(80, y);
+        ctx.lineTo(canvas.width - 80, y);
         ctx.stroke();
-        y += 30;
+        y += 35;
         
         // Last seen info
-        ctx.fillStyle = '#e63946';
-        ctx.font = 'bold 22px Inter, Arial, sans-serif';
-        ctx.fillText('LAST SEEN', canvas.width / 2, y);
-        y += 30;
+        ctx.fillStyle = '#dc2626';
+        ctx.font = 'bold 22px "Plus Jakarta Sans", Arial, sans-serif';
+        ctx.fillText('📍 LAST SEEN', canvas.width / 2, y);
+        y += 32;
         
-        ctx.fillStyle = '#1d3557';
-        ctx.font = '22px Inter, Arial, sans-serif';
+        ctx.fillStyle = '#111827';
+        ctx.font = '22px "Plus Jakarta Sans", Arial, sans-serif';
         ctx.fillText(lastLocation, canvas.width / 2, y);
         y += 28;
-        ctx.fillStyle = '#6c757d';
-        ctx.font = '20px Inter, Arial, sans-serif';
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '18px "Plus Jakarta Sans", Arial, sans-serif';
         ctx.fillText(formattedDate, canvas.width / 2, y);
         y += 40;
         
-        // Reward if specified
+        // Reward
         if (rewardAmount) {
-            ctx.fillStyle = '#2a9d8f';
-            ctx.font = 'bold 28px Inter, Arial, sans-serif';
+            ctx.fillStyle = '#059669';
+            ctx.font = 'bold 28px "Plus Jakarta Sans", Arial, sans-serif';
             ctx.fillText('💰 REWARD: ' + rewardAmount, canvas.width / 2, y);
-            y += 40;
+            y += 45;
         }
         
         // Contact section
-        ctx.fillStyle = '#1d3557';
-        ctx.fillRect(30, y, canvas.width - 60, 100);
+        const contactBoxY = y;
+        const contactBoxHeight = 110;
+        
+        const contactGradient = ctx.createLinearGradient(30, contactBoxY, canvas.width - 30, contactBoxY);
+        contactGradient.addColorStop(0, '#1e1b4b');
+        contactGradient.addColorStop(1, '#312e81');
+        ctx.fillStyle = contactGradient;
+        roundRect(ctx, 30, contactBoxY, canvas.width - 60, contactBoxHeight, 12);
+        ctx.fill();
         
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 20px Inter, Arial, sans-serif';
-        ctx.fillText('IF FOUND, PLEASE CONTACT:', canvas.width / 2, y + 30);
+        ctx.font = 'bold 20px "Plus Jakarta Sans", Arial, sans-serif';
+        ctx.fillText('IF FOUND, PLEASE CONTACT:', canvas.width / 2, contactBoxY + 35);
         
-        ctx.font = 'bold 32px Inter, Arial, sans-serif';
-        ctx.fillText(ownerPhone, canvas.width / 2, y + 70);
+        ctx.font = 'bold 36px "Plus Jakarta Sans", Arial, sans-serif';
+        ctx.fillText(ownerPhone, canvas.width / 2, contactBoxY + 80);
         
-        y += 115;
+        y = contactBoxY + contactBoxHeight + 20;
         
         if (ownerEmail) {
-            ctx.fillStyle = '#495057';
-            ctx.font = '18px Inter, Arial, sans-serif';
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '18px "Plus Jakarta Sans", Arial, sans-serif';
             ctx.fillText(ownerEmail, canvas.width / 2, y);
-            y += 25;
+            y += 30;
         }
         
         // Footer
         y = canvas.height - 30;
-        ctx.fillStyle = '#adb5bd';
-        ctx.font = '14px Inter, Arial, sans-serif';
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '14px "Plus Jakarta Sans", Arial, sans-serif';
         ctx.fillText('Created with TheLostPetHQ.com — Free Lost Pet Tool', canvas.width / 2, y);
     }
+}
+
+// Helper function to draw rounded rectangles
+function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
 }
 
 // Helper function to wrap text
@@ -342,19 +396,41 @@ function wrapText(ctx, text, maxWidth) {
     return lines;
 }
 
-// Polyfill for roundRect if needed
-if (!CanvasRenderingContext2D.prototype.roundRect) {
-    CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
-        if (w < 2 * r) r = w / 2;
-        if (h < 2 * r) r = h / 2;
-        this.moveTo(x + r, y);
-        this.arcTo(x + w, y, x + w, y + h, r);
-        this.arcTo(x + w, y + h, x, y + h, r);
-        this.arcTo(x, y + h, x, y, r);
-        this.arcTo(x, y, x + w, y, r);
-        this.closePath();
-        return this;
-    };
+// === LOAD FLYER LOCATIONS ===
+function loadFlyerLocations() {
+    const zipCode = document.getElementById('zipCode').value;
+    
+    // Simulate loading
+    setTimeout(() => {
+        document.querySelector('.map-placeholder').innerHTML = `
+            <div style="background: #f3f4f6; padding: 24px; border-radius: 12px; text-align: center;">
+                <p style="color: #6b7280; margin-bottom: 12px;">📍 High-traffic locations near <strong>${zipCode}</strong></p>
+                <p style="font-size: 0.85rem; color: #9ca3af;">Post your flyer at these spots for maximum visibility</p>
+            </div>
+        `;
+        
+        // Populate sample locations (in real app, would use Google Places API)
+        document.getElementById('dogParks').innerHTML = `
+            <div class="location-item-simple">🌳 Local dog parks and walking trails</div>
+            <div class="location-item-simple">🏃 Popular jogging paths</div>
+        `;
+        
+        document.getElementById('vetOffices').innerHTML = `
+            <div class="location-item-simple">🏥 Local veterinary clinics</div>
+            <div class="location-item-simple">🐾 Animal hospitals</div>
+        `;
+        
+        document.getElementById('petStores').innerHTML = `
+            <div class="location-item-simple">🛒 PetSmart / Petco locations</div>
+            <div class="location-item-simple">🏪 Local pet supply stores</div>
+        `;
+        
+        document.getElementById('coffeeShops').innerHTML = `
+            <div class="location-item-simple">☕ Coffee shops with bulletin boards</div>
+            <div class="location-item-simple">📬 Community centers</div>
+            <div class="location-item-simple">🏫 Libraries and post offices</div>
+        `;
+    }, 1500);
 }
 
 // === DOWNLOAD & SHARE ===
@@ -374,7 +450,11 @@ function shareFlyer() {
     const lastLocation = document.getElementById('lastLocation').value.trim();
     const ownerPhone = document.getElementById('ownerPhone').value.trim();
     
-    const shareText = `🚨 LOST ${petType.toUpperCase()}: ${petName}\n📍 Last seen: ${lastLocation}\n📞 Contact: ${ownerPhone}\n\nPlease share! Created with TheLostPetHQ.com`;
+    const shareText = `🚨 LOST ${petType.toUpperCase()}: ${petName}
+📍 Last seen: ${lastLocation}
+📞 Contact: ${ownerPhone}
+
+Please share! Created with TheLostPetHQ.com`;
     
     if (navigator.share && navigator.canShare) {
         canvas.toBlob(async (blob) => {
@@ -401,7 +481,6 @@ function shareFlyer() {
 }
 
 function fallbackShare(text) {
-    // Copy to clipboard
     navigator.clipboard.writeText(text).then(() => {
         alert('Share text copied to clipboard! Paste it along with your downloaded flyer.');
     }).catch(() => {
@@ -432,23 +511,59 @@ function startOver() {
     // Reset checklist
     document.querySelectorAll('.checklist-item input').forEach(cb => cb.checked = false);
     
+    // Reset progress steps
+    document.querySelectorAll('.progress-step').forEach(step => {
+        step.classList.remove('active', 'completed');
+    });
+    
     // Reset view
     document.getElementById('resultsSection').style.display = 'none';
     document.getElementById('formSection').style.display = 'none';
-    document.getElementById('hero').style.display = 'block';
-    hideAllSteps();
+    
+    goToHero();
     
     currentStep = 1;
-    updateProgress();
+}
+
+// === SMOOTH SCROLL ===
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// === NAVBAR SCROLL EFFECT ===
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    const currentScroll = window.pageYOffset;
     
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+    if (currentScroll > 100) {
+        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+        navbar.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+    } else {
+        navbar.style.background = 'rgba(255, 255, 255, 0.9)';
+        navbar.style.boxShadow = 'none';
+    }
+    
+    lastScroll = currentScroll;
+});
 
-// === FOOTER MODALS ===
-function showAbout() {
-    alert('The Lost Pet HQ is a free tool to help reunite lost pets with their families. We believe every pet deserves to find their way home.\n\nCreated with ❤️');
-}
-
-function showContact() {
-    alert('Questions or feedback? Email us at hello@thelostpethq.com');
-}
+// Add some CSS for location items via JS
+const style = document.createElement('style');
+style.textContent = `
+    .location-item-simple {
+        padding: 10px 12px;
+        background: #f9fafb;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #374151;
+    }
+`;
+document.head.appendChild(style);
