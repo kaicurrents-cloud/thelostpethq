@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Safety Products - GPS Trackers, ID Tags & More | The Lost Pet HQ</title>
+    <meta name="description" content="Recommended pet safety products to prevent your pet from getting lost. GPS trackers, smart tags, AirTag holders, and more.">
+    <meta property="og:title" content="Pet Safety Products - The Lost Pet HQ">
+    <meta property="og:description" content="Keep your pet safe with our recommended GPS trackers, ID tags, and safety gear.">
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .products-hero {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            padding: 80px 0 60px;
+            color: white;
+            text-align: center;
+        }
+        
+        .products-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .products-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .products-section {
+            padding: 60px 0;
+        }
+        
+        .products-section:nth-child(even) {
+            background: #f9fafb;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .section-title p {
+            color: #6b7280;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            height: 180px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+        }
+        
+        .product-content {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            width: fit-content;
+        }
+        
+        .product-badge.best {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .product-desc {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex: 1;
+        }
+        
+        .product-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #059669;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+        
+        .product-cta:hover {
+            text-decoration: underline;
+        }
+        
+        .why-section {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .why-section h2 {
+            margin-bottom: 40px;
+        }
+        
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .why-item {
+            text-align: center;
+        }
+        
+        .why-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .why-item h3 {
+            margin-bottom: 8px;
+        }
+        
+        .why-item p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+        
+        .affiliate-note {
+            text-align: center;
+            padding: 24px;
+            background: #f3f4f6;
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-paw">🐾</span>
+                <span class="logo-text">The Lost Pet <strong>HQ</strong></span>
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/listings.html">Browse Pets</a>
+                <a href="/products.html" class="active">Products</a>
+                <button class="btn btn-nav" onclick="window.location.href='/'">Report Pet</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="products-hero">
+        <div class="container">
+            <h1>🛡️ Never Lose Them Again</h1>
+            <p>The best products to keep your pet safe. Personally tested and recommended by pet owners.</p>
+        </div>
+    </section>
+
+    <!-- GPS Trackers -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>📍 GPS Pet Trackers</h2>
+                <p>Real-time location tracking. Know where they are 24/7.</p>
+            </div>
+            <div class="products-grid">
+                <a href="https://www.chewy.com/fi/b/gps-smart-collar-11278" target="_blank" rel="noopener sponsored" class="product-card">
+                    <div class="product-image">📡</div>
+                    <div class="product-content">
+                        <span class="product-badge best">⭐ Best Overall</span>
+                        <div class="product-name">Fi Smart Collar</div>
+                        <p class="product-desc">GPS + escape alerts + activity tracking. Works nationwide with LTE. 3-month battery life.</p>
+                        <span class="product-cta">Shop on Chewy →</span>
+                    </div>
+                </a>
+                <a href="https://www.chewy.com/whistle/b/gps-trackers-11278" target="_blank" rel="noopener sponsored" class="product-card">
+                    <div class="product-image">🔔</div>
+                    <div class="product-content">
+                        <span class="product-badge">Popular Choice</span>
+                        <div class="product-name">Whistle GO Explore</div>
+                        <p class="product-desc">GPS + health monitoring. Tracks location, activity, sleep, and eating habits.</p>
+                        <span class="product-cta">Shop on Chewy →</span>
+                    </div>
+                </a>
+                <a href="https://www.amazon.com/s?k=airtag+pet+collar&tag=YOUR_AMAZON_TAG" target="_blank" rel="noopener sponsored" class="product-card">
+                    <div class="product-image">🍎</div>
+                    <div class="product-content">
+                        <span class="product-badge">Budget Option</span>
+                        <div class="product-name">Apple AirTag + Holder</div>
+                        <p class="product-desc">Uses Apple's Find My network. No subscription. Great for indoor cats and neighborhood dogs.</p>
+                        <span class="product-cta">Shop on Amazon →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ID Tags -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>🏷️ Smart ID Tags</h2>
+                <p>QR code tags that link to your contact info instantly.</p>
+            </div>
+            <div class="products-grid">
+                <a href="https://www.chewy.com/b/id-tags-collar-accessories-316" target="_blank" rel="noopener sponsored" class="product-card">
+                    <div class="product-image">🔗</div>
+                    <div class="product-content">
+                        <span class="product-badge best">⭐ Recommended</span>
+                        <div class="product-name">QR Code Pet Tags</div>
+                        <p class="product-desc">Scanner reads QR code → shows your phone, address, medical info. Update anytime online.</p>
+                        <span class="product-cta">Shop on Chewy →</span>
+                    </div>
+                </a>
+                <a href="https://www.chewy.com/b/id-tags-collar-accessories-316" target="_blank" rel="noopener sponsored" class="product-card">
+                    <div class="product-image">🎨</div>
+                    <div class="product-content">
+                        <span class="product-badge">Classic</span>
+                        <div class="product-name">Engraved Metal Tags</div>
+                        <p class="product-desc">Old school but reliable. Name + phone number. No batteries, no internet needed.</p>
+                        <span class="product-cta">Shop on Chewy →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Microchipping -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>💉 Microchipping</h2>
+                <p>Permanent ID that can't fall off. The #1 way lost pets get returned.</p>
+            </div>
+            <div class="products-grid">
+                <a href="https://www.akcreunite.org" target="_blank" rel="noopener" class="product-card">
+                    <div class="product-image">🏥</div>
+                    <div class="product-content">
+                        <span class="product-badge best">⭐ Most Trusted</span>
+                        <div class="product-name">AKC Reunite</div>
+                        <p class="product-desc">Largest pet recovery database. Lifetime registration included. 24/7 recovery specialists.</p>
+                        <span class="product-cta">Learn More →</span>
+                    </div>
+                </a>
+                <a href="https://www.homeagain.com" target="_blank" rel="noopener" class="product-card">
+                    <div class="product-image">🏠</div>
+                    <div class="product-content">
+                        <span class="product-badge">Popular</span>
+                        <div class="product-name">HomeAgain</div>
+                        <p class="product-desc">Microchip + lost pet alerts to local shelters, vets, and neighbors.</p>
+                        <span class="product-cta">Learn More →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Containment -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>🚧 Escape Prevention</h2>
+                <p>Keep them safely contained at home.</p>
+            </div>
+            <div class="products-grid">
+                <a href="https://www.chewy.com/b/wireless-dog-fences-2483" target="_blank" rel="noopener sponsored" class="product-card">
+                    <div class="product-image">📶</div>
+                    <div class="product-content">
+                        <span class="product-badge">High-Tech</span>
+                        <div class="product-name">GPS Wireless Fence</div>
+                        <p class="product-desc">Create virtual boundaries. Alerts when pet leaves the zone. No digging or wires.</p>
+                        <span class="product-cta">Shop on Chewy →</span>
+                    </div>
+                </a>
+                <a href="https://www.chewy.com/b/gates-doors-pens-315" target="_blank" rel="noopener sponsored" class="product-card">
+                    <div class="product-image">🚪</div>
+                    <div class="product-content">
+                        <span class="product-badge">Essential</span>
+                        <div class="product-name">Pet Gates & Barriers</div>
+                        <p class="product-desc">Block doorways and stairs. Prevent door-dashing when guests arrive.</p>
+                        <span class="product-cta">Shop on Chewy →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Prevention -->
+    <section class="why-section">
+        <div class="container">
+            <h2>Why Prevention Matters</h2>
+            <div class="why-grid">
+                <div class="why-item">
+                    <div class="why-icon">🔢</div>
+                    <h3>10 Million</h3>
+                    <p>Pets go missing every year in the US alone</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon">😢</div>
+                    <h3>Only 15%</h3>
+                    <p>Of lost pets without ID are reunited with owners</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon">✅</div>
+                    <h3>52%</h3>
+                    <p>Of microchipped pets are returned home</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section style="padding: 60px 0; text-align: center;">
+        <div class="container">
+            <h2>Lost Your Pet Right Now?</h2>
+            <p style="color: #6b7280; margin-bottom: 24px;">Create a free flyer and start the search immediately.</p>
+            <a href="/" class="btn btn-primary btn-large">Create Free Flyer →</a>
+        </div>
+    </section>
+
+    <!-- Affiliate Disclosure -->
+    <div class="affiliate-note">
+        <p>💡 <strong>Affiliate Disclosure:</strong> Some links on this page are affiliate links. We may earn a small commission if you make a purchase — at no extra cost to you. This helps us keep the flyer tool free!</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content" style="text-align: center; padding: 40px 0;">
+                <p>© 2026 The Lost Pet HQ. Helping reunite pets with their families.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
