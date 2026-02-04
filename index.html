@@ -483,7 +483,10 @@
                 <div class="result-card flyer-card">
                     <div class="card-header">
                         <h3>📄 Your Shareable Flyer</h3>
-                        <span class="card-badge">Ready to share</span>
+                        <div class="language-toggle">
+                            <button class="lang-btn active" onclick="setFlyerLanguage('en')" data-lang="en">🇺🇸 English</button>
+                            <button class="lang-btn" onclick="setFlyerLanguage('es')" data-lang="es">🇲🇽 Español</button>
+                        </div>
                     </div>
                     <div class="flyer-preview">
                         <canvas id="flyerCanvas" width="800" height="1000"></canvas>

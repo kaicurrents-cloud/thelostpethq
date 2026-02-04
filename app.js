@@ -2,6 +2,48 @@
 let currentStep = 1;
 let petPhotoData = null;
 let petMode = 'lost'; // 'lost' or 'found'
+let flyerLanguage = 'en'; // 'en' or 'es'
+
+// === TRANSLATIONS ===
+const translations = {
+    en: {
+        lost: 'LOST',
+        found: 'FOUND',
+        lastSeen: '📍 LAST SEEN',
+        foundAt: '📍 FOUND AT',
+        reward: '💰 REWARD:',
+        ifFound: 'IF FOUND, PLEASE CONTACT:',
+        isThisYours: 'IS THIS YOUR PET? CONTACT:',
+        createdWith: 'Created with TheLostPetHQ.com — Free Lost Pet Tool',
+        scanToCall: 'SCAN TO CALL'
+    },
+    es: {
+        lost: 'PERDIDO',
+        found: 'ENCONTRADO',
+        lastSeen: '📍 VISTO POR ÚLTIMA VEZ',
+        foundAt: '📍 ENCONTRADO EN',
+        reward: '💰 RECOMPENSA:',
+        ifFound: 'SI LO ENCUENTRA, CONTACTE:',
+        isThisYours: '¿ES SU MASCOTA? CONTACTE:',
+        createdWith: 'Creado con TheLostPetHQ.com — Herramienta Gratuita',
+        scanToCall: 'ESCANEAR PARA LLAMAR'
+    }
+};
+
+function setFlyerLanguage(lang) {
+    flyerLanguage = lang;
+    
+    // Update button states
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.lang === lang) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Regenerate flyer
+    generateFlyer();
+}
 
 // === NAVIGATION ===
 function toggleMobileMenu() {
@@ -265,11 +307,12 @@ function generateFlyer() {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, 120);
     
-    // "LOST" or "FOUND" text
+    // "LOST" or "FOUND" text (translated)
+    const t = translations[flyerLanguage];
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 72px "Plus Jakarta Sans", Arial, sans-serif';
     ctx.textAlign = 'center';
-    const headerText = petMode === 'found' ? 'FOUND ' : 'LOST ';
+    const headerText = petMode === 'found' ? t.found + ' ' : t.lost + ' ';
     ctx.fillText(headerText + petType.toUpperCase(), canvas.width / 2, 85);
     
     // Pet photo area
@@ -365,10 +408,10 @@ function generateFlyer() {
         ctx.stroke();
         y += 35;
         
-        // Location info - different label for found vs lost
+        // Location info - different label for found vs lost (translated)
         ctx.fillStyle = petMode === 'found' ? '#059669' : '#dc2626';
         ctx.font = 'bold 22px "Plus Jakarta Sans", Arial, sans-serif';
-        const locationLabel = petMode === 'found' ? '📍 FOUND AT' : '📍 LAST SEEN';
+        const locationLabel = petMode === 'found' ? t.foundAt : t.lastSeen;
         ctx.fillText(locationLabel, canvas.width / 2, y);
         y += 32;
         
@@ -381,11 +424,11 @@ function generateFlyer() {
         ctx.fillText(formattedDate, canvas.width / 2, y);
         y += 40;
         
-        // Reward (only for lost pets)
+        // Reward (only for lost pets) - translated
         if (rewardAmount && petMode === 'lost') {
             ctx.fillStyle = '#059669';
             ctx.font = 'bold 28px "Plus Jakarta Sans", Arial, sans-serif';
-            ctx.fillText('💰 REWARD: ' + rewardAmount, canvas.width / 2, y);
+            ctx.fillText(t.reward + ' ' + rewardAmount, canvas.width / 2, y);
             y += 45;
         }
         
@@ -407,7 +450,7 @@ function generateFlyer() {
         
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 20px "Plus Jakarta Sans", Arial, sans-serif';
-        const contactLabel = petMode === 'found' ? 'IS THIS YOUR PET? CONTACT:' : 'IF FOUND, PLEASE CONTACT:';
+        const contactLabel = petMode === 'found' ? t.isThisYours : t.ifFound;
         ctx.fillText(contactLabel, canvas.width / 2, contactBoxY + 35);
         
         ctx.font = 'bold 36px "Plus Jakarta Sans", Arial, sans-serif';
@@ -455,7 +498,7 @@ function generateFlyer() {
                     ctx.fillStyle = '#6b7280';
                     ctx.font = '10px "Plus Jakarta Sans", Arial, sans-serif';
                     ctx.textAlign = 'center';
-                    ctx.fillText('SCAN TO CALL', qrX + qrSize/2, qrY + qrSize + 15);
+                    ctx.fillText(t.scanToCall, qrX + qrSize/2, qrY + qrSize + 15);
                     ctx.textAlign = 'center'; // Reset
                 }
             });
@@ -465,7 +508,7 @@ function generateFlyer() {
         y = canvas.height - 30;
         ctx.fillStyle = '#9ca3af';
         ctx.font = '14px "Plus Jakarta Sans", Arial, sans-serif';
-        ctx.fillText('Created with TheLostPetHQ.com — Free Lost Pet Tool', canvas.width / 2, y);
+        ctx.fillText(t.createdWith, canvas.width / 2, y);
     }
 }
 
