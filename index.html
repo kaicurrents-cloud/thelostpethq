@@ -122,10 +122,16 @@
                 <h1>Bring Your Best Friend <span class="gradient-text">Home</span></h1>
                 <p class="hero-subtitle">When every minute counts, we help you take action fast. Generate a professional flyer, get local resources, and follow a proven action plan — all in under 2 minutes.</p>
                 <div class="hero-cta">
-                    <button class="btn btn-primary btn-large" onclick="startForm()">
-                        <span class="btn-icon">🚨</span>
-                        My Pet Is Lost — Help Me Now
-                    </button>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-large" onclick="startForm('lost')">
+                            <span class="btn-icon">🚨</span>
+                            My Pet Is Lost
+                        </button>
+                        <button class="btn btn-secondary btn-large" onclick="startForm('found')">
+                            <span class="btn-icon">🐾</span>
+                            I Found a Pet
+                        </button>
+                    </div>
                     <p class="hero-reassurance">
                         <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -386,12 +392,12 @@
                         </div>
                         <div class="form-grid">
                             <div class="form-group full-width">
-                                <label for="lastLocation">Last Seen Location <span class="required">*</span></label>
+                                <label for="lastLocation" id="lastLocationLabel">Last Seen Location <span class="required">*</span></label>
                                 <input type="text" id="lastLocation" placeholder="e.g., 123 Main St, Boise, ID or 'Near Central Park'" required>
                                 <span class="form-hint">Be as specific as possible — street address, intersection, or landmark</span>
                             </div>
                             <div class="form-group">
-                                <label for="lastDate">Date Lost <span class="required">*</span></label>
+                                <label for="lastDate" id="lastDateLabel">Date Lost <span class="required">*</span></label>
                                 <input type="date" id="lastDate" required>
                             </div>
                             <div class="form-group">
@@ -413,8 +419,8 @@
                     <!-- Step 4: Contact -->
                     <div class="form-step" id="step4">
                         <div class="form-step-header">
-                            <h2>Your contact information</h2>
-                            <p>This goes on the flyer so finders can reach you</p>
+                            <h2 class="contact-section-title">Your contact information</h2>
+                            <p class="contact-section-desc">This goes on the flyer so finders can reach you</p>
                         </div>
                         <div class="form-grid">
                             <div class="form-group">

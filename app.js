@@ -1,13 +1,16 @@
 // === STATE ===
 let currentStep = 1;
 let petPhotoData = null;
+let petMode = 'lost'; // 'lost' or 'found'
 
 // === NAVIGATION ===
 function toggleMobileMenu() {
     document.getElementById('mobileMenu').classList.toggle('active');
 }
 
-function startForm() {
+function startForm(mode = 'lost') {
+    petMode = mode;
+    
     document.getElementById('hero').style.display = 'none';
     document.querySelector('.trust-bar').style.display = 'none';
     document.querySelector('.how-it-works').style.display = 'none';
@@ -21,6 +24,29 @@ function startForm() {
     
     // Set default date to today
     document.getElementById('lastDate').valueAsDate = new Date();
+    
+    // Update UI for found mode
+    if (mode === 'found') {
+        document.querySelector('.form-card h2').textContent = '🐾 Found Pet Details';
+        document.getElementById('lastDateLabel').textContent = 'Date Found';
+        document.getElementById('lastLocationLabel').textContent = 'Where did you find them?';
+        document.querySelector('.contact-section-title').textContent = 'Your Contact Info (Finder)';
+        document.querySelector('.contact-section-desc').textContent = 'So the owner can reach you to claim their pet';
+        document.getElementById('formSection').classList.add('found-mode');
+        // Hide reward field for found pets
+        const rewardGroup = document.getElementById('rewardAmount').closest('.form-group');
+        if (rewardGroup) rewardGroup.style.display = 'none';
+    } else {
+        document.querySelector('.form-card h2').textContent = '📝 Pet Details';
+        document.getElementById('lastDateLabel').textContent = 'Date Lost';
+        document.getElementById('lastLocationLabel').textContent = 'Last Seen Location';
+        document.querySelector('.contact-section-title').textContent = 'Your Contact Info';
+        document.querySelector('.contact-section-desc').textContent = 'This goes on the flyer so finders can reach you';
+        document.getElementById('formSection').classList.remove('found-mode');
+        // Show reward field for lost pets
+        const rewardGroup = document.getElementById('rewardAmount').closest('.form-group');
+        if (rewardGroup) rewardGroup.style.display = '';
+    }
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -169,6 +195,20 @@ function generateResults() {
         // Set zip in map header
         document.getElementById('mapZipCode').textContent = document.getElementById('zipCode').value;
         
+        // Update results page for found vs lost mode
+        const resultsTitle = document.querySelector('.results-header h1');
+        const resultsSubtitle = document.querySelector('.results-header p');
+        
+        if (petMode === 'found') {
+            resultsTitle.textContent = 'Found Pet Flyer Ready!';
+            resultsSubtitle.textContent = 'Share this to help find the owner. Check local lost pet posts and shelters.';
+            document.getElementById('resultsSection').classList.add('found-mode');
+        } else {
+            resultsTitle.textContent = 'Your Lost Pet Kit is Ready!';
+            resultsSubtitle.textContent = 'Share the flyer everywhere and follow the checklist below. The first 24 hours are critical.';
+            document.getElementById('resultsSection').classList.remove('found-mode');
+        }
+        
         // Generate the flyer
         generateFlyer();
         
@@ -213,18 +253,24 @@ function generateFlyer() {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Gradient header
+    // Gradient header - different colors for lost vs found
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, 120);
-    gradient.addColorStop(0, '#dc2626');
-    gradient.addColorStop(1, '#b91c1c');
+    if (petMode === 'found') {
+        gradient.addColorStop(0, '#059669');
+        gradient.addColorStop(1, '#047857');
+    } else {
+        gradient.addColorStop(0, '#dc2626');
+        gradient.addColorStop(1, '#b91c1c');
+    }
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, 120);
     
-    // "LOST" text
+    // "LOST" or "FOUND" text
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 72px "Plus Jakarta Sans", Arial, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('LOST ' + petType.toUpperCase(), canvas.width / 2, 85);
+    const headerText = petMode === 'found' ? 'FOUND ' : 'LOST ';
+    ctx.fillText(headerText + petType.toUpperCase(), canvas.width / 2, 85);
     
     // Pet photo area
     const photoY = 140;
@@ -319,10 +365,11 @@ function generateFlyer() {
         ctx.stroke();
         y += 35;
         
-        // Last seen info
-        ctx.fillStyle = '#dc2626';
+        // Location info - different label for found vs lost
+        ctx.fillStyle = petMode === 'found' ? '#059669' : '#dc2626';
         ctx.font = 'bold 22px "Plus Jakarta Sans", Arial, sans-serif';
-        ctx.fillText('📍 LAST SEEN', canvas.width / 2, y);
+        const locationLabel = petMode === 'found' ? '📍 FOUND AT' : '📍 LAST SEEN';
+        ctx.fillText(locationLabel, canvas.width / 2, y);
         y += 32;
         
         ctx.fillStyle = '#111827';
@@ -334,8 +381,8 @@ function generateFlyer() {
         ctx.fillText(formattedDate, canvas.width / 2, y);
         y += 40;
         
-        // Reward
-        if (rewardAmount) {
+        // Reward (only for lost pets)
+        if (rewardAmount && petMode === 'lost') {
             ctx.fillStyle = '#059669';
             ctx.font = 'bold 28px "Plus Jakarta Sans", Arial, sans-serif';
             ctx.fillText('💰 REWARD: ' + rewardAmount, canvas.width / 2, y);
@@ -347,15 +394,21 @@ function generateFlyer() {
         const contactBoxHeight = 110;
         
         const contactGradient = ctx.createLinearGradient(30, contactBoxY, canvas.width - 30, contactBoxY);
-        contactGradient.addColorStop(0, '#1e1b4b');
-        contactGradient.addColorStop(1, '#312e81');
+        if (petMode === 'found') {
+            contactGradient.addColorStop(0, '#065f46');
+            contactGradient.addColorStop(1, '#047857');
+        } else {
+            contactGradient.addColorStop(0, '#1e1b4b');
+            contactGradient.addColorStop(1, '#312e81');
+        }
         ctx.fillStyle = contactGradient;
         roundRect(ctx, 30, contactBoxY, canvas.width - 60, contactBoxHeight, 12);
         ctx.fill();
         
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 20px "Plus Jakarta Sans", Arial, sans-serif';
-        ctx.fillText('IF FOUND, PLEASE CONTACT:', canvas.width / 2, contactBoxY + 35);
+        const contactLabel = petMode === 'found' ? 'IS THIS YOUR PET? CONTACT:' : 'IF FOUND, PLEASE CONTACT:';
+        ctx.fillText(contactLabel, canvas.width / 2, contactBoxY + 35);
         
         ctx.font = 'bold 36px "Plus Jakarta Sans", Arial, sans-serif';
         ctx.fillText(ownerPhone, canvas.width / 2, contactBoxY + 80);

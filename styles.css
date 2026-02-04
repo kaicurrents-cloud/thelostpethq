@@ -2192,3 +2192,34 @@ a:focus-visible {
 .skip-link:focus {
     top: 0;
 }
+
+/* === FOUND PET MODE === */
+.found-mode .card-badge.urgent {
+    background: #059669;
+}
+
+.found-mode .time-alert {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border-color: #6ee7b7;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.hero-buttons .btn-large {
+    min-width: 200px;
+}
+
+@media (max-width: 480px) {
+    .hero-buttons {
+        flex-direction: column;
+    }
+    
+    .hero-buttons .btn-large {
+        width: 100%;
+    }
+}
