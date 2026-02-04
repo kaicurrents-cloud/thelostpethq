@@ -801,6 +801,27 @@
                 </div>
             </div>
 
+            <!-- Sighting Report Section -->
+            <div class="sighting-section">
+                <div class="sighting-card">
+                    <div class="sighting-header">
+                        <div>
+                            <h3>👀 Community Sightings</h3>
+                            <p>Share this section with neighbors — they can report sightings!</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openSightingModal()">
+                            + Report a Sighting
+                        </button>
+                    </div>
+                    <div class="sightings-list" id="sightingsList">
+                        <div class="no-sightings">
+                            <span>📭</span>
+                            <p>No sightings reported yet. Share your flyer to get tips!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Pro Tips Section -->
             <div class="tips-section">
                 <div class="tips-header">
@@ -1079,6 +1100,42 @@
             </div>
         </div>
     </footer>
+
+    <!-- Sighting Report Modal -->
+    <div class="modal" id="sightingModal">
+        <div class="modal-overlay" onclick="closeSightingModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSightingModal()">×</button>
+            <h2>👀 Report a Sighting</h2>
+            <p>Think you saw this pet? Every tip helps!</p>
+            
+            <form class="sighting-form" onsubmit="submitSighting(event)">
+                <div class="form-group">
+                    <label>Where did you see them? *</label>
+                    <input type="text" id="sightingLocation" placeholder="e.g., Corner of Oak St and 5th Ave" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date *</label>
+                        <input type="date" id="sightingDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Time (approx)</label>
+                        <input type="time" id="sightingTime">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>What did you see?</label>
+                    <textarea id="sightingDescription" rows="3" placeholder="Describe what you saw - direction heading, behavior, any collar, etc."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Your contact (optional, in case owner has questions)</label>
+                    <input type="text" id="sightingContact" placeholder="Phone or email">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit Sighting</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Pet ID Card Modal -->
     <div class="modal" id="idCardModal">

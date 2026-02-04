@@ -2532,3 +2532,124 @@ a:focus-visible {
         align-items: flex-start;
     }
 }
+
+/* === SIGHTING REPORTS === */
+.sighting-section {
+    margin: 40px 0;
+}
+
+.sighting-card {
+    background: white;
+    border: 2px solid var(--gray-200);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.sighting-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-bottom: 2px solid #fcd34d;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.sighting-header h3 {
+    margin: 0 0 4px;
+    color: var(--gray-900);
+}
+
+.sighting-header p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+
+.sightings-list {
+    padding: 20px 24px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.no-sightings {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray-500);
+}
+
+.no-sightings span {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.sighting-item {
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.sighting-item:last-child {
+    margin-bottom: 0;
+}
+
+.sighting-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sighting-location {
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.sighting-date {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+}
+
+.sighting-desc {
+    color: var(--gray-700);
+    font-size: 0.95rem;
+    margin: 0 0 8px;
+    line-height: 1.5;
+}
+
+.sighting-contact {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+.sighting-form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.sighting-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+@media (max-width: 480px) {
+    .sighting-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .sighting-header .btn {
+        width: 100%;
+    }
+}

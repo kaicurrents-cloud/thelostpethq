@@ -1353,3 +1353,90 @@ document.addEventListener('DOMContentLoaded', function() {
         input.addEventListener('input', generateIdCard);
     });
 });
+
+// === SIGHTING REPORTS ===
+function openSightingModal() {
+    document.getElementById('sightingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Set default date to today
+    document.getElementById('sightingDate').valueAsDate = new Date();
+}
+
+function closeSightingModal() {
+    document.getElementById('sightingModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function submitSighting(e) {
+    e.preventDefault();
+    
+    const sighting = {
+        id: Date.now(),
+        location: document.getElementById('sightingLocation').value,
+        date: document.getElementById('sightingDate').value,
+        time: document.getElementById('sightingTime').value || 'Unknown',
+        description: document.getElementById('sightingDescription').value,
+        contact: document.getElementById('sightingContact').value,
+        timestamp: new Date().toISOString()
+    };
+    
+    // Save to localStorage
+    const sightings = JSON.parse(localStorage.getItem('lostpethq_sightings') || '[]');
+    sightings.unshift(sighting);
+    localStorage.setItem('lostpethq_sightings', JSON.stringify(sightings));
+    
+    // Update display
+    displaySightings();
+    
+    // Close modal and show toast
+    closeSightingModal();
+    showToast('Sighting reported! Thank you for helping. 🙏');
+    
+    // Reset form
+    e.target.reset();
+}
+
+function displaySightings() {
+    const sightings = JSON.parse(localStorage.getItem('lostpethq_sightings') || '[]');
+    const container = document.getElementById('sightingsList');
+    
+    if (sightings.length === 0) {
+        container.innerHTML = `
+            <div class="no-sightings">
+                <span>📭</span>
+                <p>No sightings reported yet. Share your flyer to get tips!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = sightings.map(s => {
+        const date = new Date(s.date + 'T' + (s.time || '12:00'));
+        const formattedDate = date.toLocaleDateString('en-US', { 
+            weekday: 'short', 
+            month: 'short', 
+            day: 'numeric',
+            hour: s.time ? 'numeric' : undefined,
+            minute: s.time ? '2-digit' : undefined
+        });
+        
+        return `
+            <div class="sighting-item">
+                <div class="sighting-item-header">
+                    <span class="sighting-location">📍 ${s.location}</span>
+                    <span class="sighting-date">${formattedDate}</span>
+                </div>
+                ${s.description ? `<p class="sighting-desc">${s.description}</p>` : ''}
+                ${s.contact ? `<p class="sighting-contact">Contact: ${s.contact}</p>` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+// Load sightings when results are shown
+const originalGenerateResults2 = generateResults;
+generateResults = function() {
+    originalGenerateResults2.apply(this, arguments);
+    setTimeout(displaySightings, 100);
+};
