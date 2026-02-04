@@ -1491,3 +1491,23 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(trustBar);
     }
 });
+
+// === CERTIFICATION WAITLIST ===
+function handleCertWaitlist(e) {
+    e.preventDefault();
+    const email = document.getElementById('certEmail').value;
+    
+    // Store in localStorage
+    const waitlist = JSON.parse(localStorage.getItem('lostpethq_cert_waitlist') || '[]');
+    waitlist.push({ email, timestamp: Date.now() });
+    localStorage.setItem('lostpethq_cert_waitlist', JSON.stringify(waitlist));
+    
+    // Show success
+    showToast('You\'re on the list! We\'ll email you when enrollment opens. 🎓');
+    e.target.reset();
+    
+    // Track
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'cert_waitlist', { event_category: 'conversion' });
+    }
+}
