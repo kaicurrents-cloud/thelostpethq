@@ -2727,3 +2727,93 @@ a:focus-visible {
 .night-kit-tip strong {
     color: #fbbf24;
 }
+
+/* === MICROCHIP REGISTRIES === */
+.microchip-section {
+    margin: 40px 0;
+}
+
+.microchip-card {
+    background: white;
+    border: 2px solid var(--gray-200);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.microchip-header {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-bottom: 2px solid #93c5fd;
+}
+
+.microchip-header h3 {
+    margin: 0 0 4px;
+    color: var(--gray-900);
+}
+
+.microchip-header p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+
+.microchip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    padding: 20px 24px;
+}
+
+.microchip-item {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.microchip-item:hover {
+    background: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.microchip-item.universal {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-color: #fbbf24;
+    grid-column: span 2;
+}
+
+.microchip-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 6px;
+}
+
+.microchip-item strong {
+    color: var(--gray-900);
+    margin-bottom: 4px;
+}
+
+.microchip-item span:last-child {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+}
+
+.microchip-tip {
+    padding: 16px 24px 20px;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    background: var(--gray-50);
+    margin: 0;
+}
+
+@media (max-width: 480px) {
+    .microchip-item.universal {
+        grid-column: span 1;
+    }
+}
