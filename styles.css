@@ -2105,3 +2105,24 @@ section {
     background: #20bd5a;
     transform: translateY(-2px);
 }
+
+/* === SMS & EMAIL BUTTONS === */
+.btn-sms {
+    background: #5856d6;
+    color: white;
+}
+
+.btn-sms:hover {
+    background: #4a48c7;
+    transform: translateY(-2px);
+}
+
+.btn-email {
+    background: #ea4335;
+    color: white;
+}
+
+.btn-email:hover {
+    background: #d33426;
+    transform: translateY(-2px);
+}

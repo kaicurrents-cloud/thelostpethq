@@ -616,6 +616,47 @@ _Flyer created at TheLostPetHQ.com_`);
     }, 500);
 }
 
+function shareViaSMS() {
+    const petName = document.getElementById('petName').value.trim();
+    const petType = document.getElementById('petType').value;
+    const lastLocation = document.getElementById('lastLocation').value.trim();
+    const ownerPhone = document.getElementById('ownerPhone').value.trim();
+    
+    const text = encodeURIComponent(`🚨 LOST ${petType.toUpperCase()}: ${petName}! Last seen: ${lastLocation}. If found, call ${ownerPhone}. Please share!`);
+    
+    // Works on mobile, opens default SMS app
+    window.location.href = `sms:?body=${text}`;
+}
+
+function shareViaEmail() {
+    const petName = document.getElementById('petName').value.trim();
+    const petType = document.getElementById('petType').value;
+    const lastLocation = document.getElementById('lastLocation').value.trim();
+    const ownerPhone = document.getElementById('ownerPhone').value.trim();
+    const ownerEmail = document.getElementById('ownerEmail').value.trim();
+    
+    const subject = encodeURIComponent(`URGENT: Lost ${petType} - ${petName} - Please Help!`);
+    const body = encodeURIComponent(`Hi,
+
+I'm reaching out because my ${petType}, ${petName}, has gone missing and I need help spreading the word.
+
+📍 LAST SEEN: ${lastLocation}
+📞 CONTACT: ${ownerPhone}
+${ownerEmail ? '📧 EMAIL: ' + ownerEmail : ''}
+
+If you see ${petName} or have any information, please contact me immediately.
+
+Please forward this email to anyone in the area who might be able to help!
+
+Thank you so much,
+${document.getElementById('ownerName').value.trim()}
+
+---
+Flyer created with TheLostPetHQ.com - Free lost pet tools`);
+    
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
 async function copyFlyerToClipboard() {
     const canvas = document.getElementById('flyerCanvas');
     const btn = event.target.closest('button');
