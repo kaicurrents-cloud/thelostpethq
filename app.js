@@ -802,6 +802,22 @@ function updateTimeElapsed(dateStr, timeStr) {
     alertEl.className = 'time-alert ' + alertClass;
 }
 
+// === TIPS ACCORDION ===
+function toggleTip(button) {
+    const item = button.parentElement;
+    const isOpen = item.classList.contains('open');
+    
+    // Close all tips
+    document.querySelectorAll('.tip-item').forEach(tip => {
+        tip.classList.remove('open');
+    });
+    
+    // Open clicked one (if it wasn't already open)
+    if (!isOpen) {
+        item.classList.add('open');
+    }
+}
+
 // === EMAIL CAPTURE ===
 function handleEmailSubmit(e) {
     e.preventDefault();
