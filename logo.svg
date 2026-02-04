@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background rounded rectangle -->
+  <rect x="5" y="5" width="390" height="90" rx="15" fill="url(#grad)"/>
+  
+  <!-- Paw print icon -->
+  <g fill="white" transform="translate(25, 20)">
+    <!-- Main pad -->
+    <ellipse cx="25" cy="45" rx="18" ry="15"/>
+    <!-- Top pads -->
+    <ellipse cx="10" cy="22" rx="9" ry="11"/>
+    <ellipse cx="28" cy="15" rx="9" ry="11"/>
+    <ellipse cx="46" cy="22" rx="9" ry="11"/>
+    <!-- Small top pad -->
+    <ellipse cx="40" cy="38" rx="7" ry="9"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="105" y="45" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="white">The Lost Pet</text>
+  <text x="105" y="72" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white">HQ</text>
+  
+  <!-- Tagline -->
+  <text x="150" y="72" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.8)">Rapid Response Tool</text>
+</svg>
