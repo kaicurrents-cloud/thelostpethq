@@ -1,6 +1,6 @@
 [build]
   publish = "."
-  command = ""
+  command = "echo 'Static site - no build needed'"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
