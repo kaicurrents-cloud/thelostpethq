@@ -459,22 +459,22 @@ h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); }
 }
 
 .badge-1 {
-    top: 20%;
-    right: -10%;
+    top: 15%;
+    right: 5%;
     animation: float 5s ease-in-out infinite;
     animation-delay: 0.5s;
 }
 
 .badge-2 {
-    bottom: 30%;
-    right: -5%;
+    bottom: 35%;
+    right: 8%;
     animation: float 5s ease-in-out infinite;
     animation-delay: 1s;
 }
 
 .badge-3 {
     bottom: 10%;
-    left: 0;
+    left: 5%;
     animation: float 5s ease-in-out infinite;
     animation-delay: 1.5s;
 }
